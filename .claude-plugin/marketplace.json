@@ -15,6 +15,11 @@
       "name": "mention-scout",
       "source": "./mention-scout",
       "description": "Find live conversations where your brand can genuinely join in \u2014 fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps."
+    },
+    {
+      "name": "juicer",
+      "source": "./juicer",
+      "description": "API reference skill: teaches your agent both Juicer API surfaces (feeds/moderation/embeds/webhooks + cross-platform data lookups), email-only signup, the full endpoint map, and the gotchas that aren't in the docs."
     }
   ]
 }

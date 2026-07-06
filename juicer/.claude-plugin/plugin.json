@@ -1,0 +1,14 @@
+{
+  "name": "juicer",
+  "displayName": "Juicer API Reference",
+  "version": "1.0.0",
+  "description": "Teaches your agent the Juicer API: both surfaces (Integration API for feeds/moderation/embeds/webhooks, Data API for cross-platform social lookups), email-only signup with no dashboard, the full endpoint map, and the gotchas that aren't in the docs.",
+  "author": {
+    "name": "Juicer",
+    "email": "team@juicer.io"
+  },
+  "homepage": "https://www.juicer.io/api",
+  "repository": "https://github.com/juicer-io/skills",
+  "license": "MIT",
+  "keywords": ["juicer", "api-reference", "social-media", "embeds", "social-data"]
+}
