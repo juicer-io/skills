@@ -15,6 +15,8 @@ you never open a dashboard.
 |---|---|
 | [**topic-scout**](./topic-scout) | Finds blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X — years of real questions in buyers' own words, plus live complaints and outage reports — detects vendor astroturfing (and shows you which keywords competitors seed), and flags "changing right now" events (deprecations, breakage, pricing changes) before search volume exists. Every finding carries its source URL. |
 
+| [**mention-scout**](./mention-scout) | Finds live conversations where your brand can genuinely join in: fresh "best tool for…?" asks, competitor complaints and outages, and unanswered mentions of your own brand — ranked by freshness and answerability, with a suggested angle for each reply. Disclosed engagement only; astroturfed threads are flagged as traps, not opportunities. |
+
 More coming: brand monitoring (change detection on competitors and your own
 mentions), idea validation as a standalone quick check.
 

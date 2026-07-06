@@ -10,6 +10,11 @@
       "name": "topic-scout",
       "source": "./topic-scout",
       "description": "Find blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X (years of real questions, live complaints and outages), detects vendor astroturfing and shows which keywords competitors seed, and flags 'changing right now' events before search volume exists. Every finding carries its source URL."
+    },
+    {
+      "name": "mention-scout",
+      "source": "./mention-scout",
+      "description": "Find live conversations where your brand can genuinely join in \u2014 fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps."
     }
   ]
 }

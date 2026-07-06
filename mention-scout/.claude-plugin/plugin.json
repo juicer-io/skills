@@ -1,0 +1,14 @@
+{
+  "name": "mention-scout",
+  "displayName": "Mention Scout",
+  "version": "1.0.0",
+  "description": "Find live conversations where your brand can genuinely join in — fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps. Powered by the Juicer Data API.",
+  "author": {
+    "name": "Juicer",
+    "email": "hello@juicer.io"
+  },
+  "homepage": "https://www.juicer.io/api",
+  "repository": "https://github.com/juicer-io/skills",
+  "license": "MIT",
+  "keywords": ["reddit", "brand-mentions", "community-marketing", "social-listening", "engagement"]
+}
