@@ -5,7 +5,7 @@
   "description": "Blog-topic discovery from real social conversations across Reddit, X, TikTok and more, with a source link on every finding. Powered by the Juicer Data API.",
   "author": {
     "name": "Juicer",
-    "email": "hello@juicer.io"
+    "email": "team@juicer.io"
   },
   "homepage": "https://www.juicer.io/api",
   "repository": "https://github.com/juicer-io/skills",

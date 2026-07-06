@@ -3,7 +3,7 @@
   "description": "Agent skills by the Juicer team \u2014 social-signal tools for marketers, powered by the Juicer Data API.",
   "owner": {
     "name": "Juicer",
-    "email": "hello@juicer.io"
+    "email": "team@juicer.io"
   },
   "plugins": [
     {
