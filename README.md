@@ -35,6 +35,11 @@ skills directory:
 cp -r topic-scout/skills/topic-scout ~/.claude/skills/
 ```
 
+**Then just ask.** Once installed, say "find me blog topic ideas" (first run
+interviews you about your brand and signs you up for a free API key with your
+email), or "should we write about \<idea\>?" to validate a specific one. You
+can also invoke it directly: `/topic-scout:topic-scout`.
+
 ## What you'll get
 
 See a real output: [topic-scout example report](./topic-scout/example-report.md)
