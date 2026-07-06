@@ -1,0 +1,20 @@
+{
+  "name": "topic-scout",
+  "displayName": "Topic Scout",
+  "version": "1.0.0",
+  "description": "Blog-topic discovery from real social conversations across Reddit, X, TikTok and more, with a source link on every finding. Powered by the Juicer Data API.",
+  "author": {
+    "name": "Juicer",
+    "email": "hello@juicer.io"
+  },
+  "homepage": "https://www.juicer.io/api",
+  "repository": "https://github.com/juicer-io/skills",
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "content-marketing",
+    "reddit",
+    "social-listening",
+    "blog-topics"
+  ]
+}

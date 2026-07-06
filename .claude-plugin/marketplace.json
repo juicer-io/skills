@@ -1,0 +1,15 @@
+{
+  "name": "juicer-skills",
+  "description": "Agent skills by the Juicer team \u2014 social-signal tools for marketers, powered by the Juicer Data API.",
+  "owner": {
+    "name": "Juicer",
+    "email": "hello@juicer.io"
+  },
+  "plugins": [
+    {
+      "name": "topic-scout",
+      "source": "./topic-scout",
+      "description": "Find blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X (years of real questions, live complaints and outages), detects vendor astroturfing and shows which keywords competitors seed, and flags 'changing right now' events before search volume exists. Every finding carries its source URL."
+    }
+  ]
+}

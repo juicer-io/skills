@@ -1,0 +1,15 @@
+{
+  "brand_name": "Acme Scheduling",
+  "product": "Appointment-booking SaaS for independent clinics",
+  "audience": "Practice managers and solo practitioners at small clinics; non-technical; buy after comparing 2-3 tools",
+  "competitors": ["Calendly", "Acuity", "SimplyBook"],
+  "subreddits": ["smallbusiness", "physicaltherapy", "optometry"],
+  "capabilities": [
+    "HIPAA-compliant intake forms",
+    "two-way calendar sync",
+    "SMS reminders"
+  ],
+  "never_claim": [
+    "EHR integration (on roadmap, not shipped)"
+  ]
+}
