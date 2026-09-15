@@ -1,0 +1,52 @@
+{
+  "name": "juicer-skills",
+  "owner": {
+    "name": "Juicer",
+    "email": "team@juicer.io"
+  },
+  "metadata": {
+    "description": "Agent skills by the Juicer team — social-signal tools for marketers, powered by the Juicer Data API."
+  },
+  "plugins": [
+    {
+      "name": "juicer",
+      "source": "./",
+      "version": "1.0.0",
+      "description": "Social media data and feed API to search posts, brand mentions, hashtags, subreddits and profiles, and to aggregate, moderate and embed social feeds on any website, across 15+ platforms Reddit, X, Instagram, Facebook, TikTok, YouTube, LinkedIn, Pinterest, Bluesky, Tumblr, Vimeo, Flickr, Giphy and more",
+      "author": {
+        "name": "Juicer",
+        "email": "team@juicer.io",
+        "url": "https://www.juicer.io"
+      },
+      "homepage": "https://developers.juicer.io",
+      "repository": "https://github.com/juicer-io/skills",
+      "license": "MIT",
+      "category": "marketing",
+      "tags": [
+        "social-media",
+        "social-data",
+        "social-listening",
+        "brand-mentions",
+        "marketing"
+      ],
+      "keywords": [
+        "juicer",
+        "social-media",
+        "social-data",
+        "social-listening",
+        "brand-mentions",
+        "reddit",
+        "instagram",
+        "tiktok",
+        "embeds",
+        "api-reference",
+        "marketing"
+      ],
+      "skills": [
+        "./skills/juicer",
+        "./skills/topic-scout",
+        "./skills/mention-scout"
+      ]
+    }
+  ]
+}

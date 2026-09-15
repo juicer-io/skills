@@ -1,6 +1,5 @@
 {
   "name": "juicer",
-  "displayName": "Juicer",
   "version": "1.0.0",
   "description": "Social media data and feed API to search posts, brand mentions, hashtags, subreddits and profiles, and to aggregate, moderate and embed social feeds on any website, across 15+ platforms Reddit, X, Instagram, Facebook, TikTok, YouTube, LinkedIn, Pinterest, Bluesky, Tumblr, Vimeo, Flickr, Giphy and more",
   "author": {
