@@ -1,11 +1,19 @@
 {
   "name": "juicer-skills",
-  "description": "Agent skills by the Juicer team \u2014 social-signal tools for marketers, powered by the Juicer Data API.",
+  "description": "Agent skills by the Juicer team — social-signal tools for marketers, powered by the Juicer Data API.",
   "owner": {
     "name": "Juicer",
     "email": "team@juicer.io"
   },
   "plugins": [
+    {
+      "name": "juicer",
+      "displayName": "Juicer",
+      "source": "./",
+      "description": "Social media data and feed API to search posts, brand mentions, hashtags, subreddits and profiles, and to aggregate, moderate and embed social feeds on any website, across 15+ platforms Reddit, X, Instagram, Facebook, TikTok, YouTube, LinkedIn, Pinterest, Bluesky, Tumblr, Vimeo, Flickr, Giphy and more",
+      "category": "marketing",
+      "homepage": "https://developers.juicer.io"
+    },
     {
       "name": "topic-scout",
       "source": "./topic-scout",
@@ -14,12 +22,7 @@
     {
       "name": "mention-scout",
       "source": "./mention-scout",
-      "description": "Find live conversations where your brand can genuinely join in \u2014 fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps."
-    },
-    {
-      "name": "juicer",
-      "source": "./juicer",
-      "description": "API reference skill: teaches your agent both Juicer API surfaces (feeds/moderation/embeds/webhooks + cross-platform data lookups), email-only signup, the full endpoint map, and the gotchas that aren't in the docs."
+      "description": "Find live conversations where your brand can genuinely join in — fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps."
     }
   ]
 }

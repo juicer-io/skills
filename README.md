@@ -22,13 +22,18 @@ mentions), idea validation as a standalone quick check.
 
 ## Install
 
-**Claude Code (recommended):**
+**Claude Code (recommended):** one plugin, all three skills:
 
 ```
 /plugin marketplace add juicer-io/skills
+/plugin install juicer@juicer-skills
+```
+
+Or install a single skill on its own:
+
+```
 /plugin install topic-scout@juicer-skills
 /plugin install mention-scout@juicer-skills
-/plugin install juicer@juicer-skills
 ```
 
 **Any other agent** — each skill is a self-contained folder of instructions
@@ -42,8 +47,8 @@ cp -r topic-scout/skills/topic-scout mention-scout/skills/mention-scout ~/.claud
 **Then just ask.** Say "find me blog topic ideas" (topic-scout) or "where
 should we reply on Reddit this week?" (mention-scout). The first run
 interviews you about your brand and signs you up for a free API key with just
-your email; the skills share that config and key. Direct invocation:
-`/topic-scout:topic-scout` and `/mention-scout:mention-scout`.
+your email; the skills share that config and key. Direct invocation from the bundle:
+`/juicer:topic-scout`, `/juicer:mention-scout`, `/juicer:juicer`.
 
 ## What you'll get
 
