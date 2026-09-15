@@ -15,20 +15,25 @@ you never open a dashboard.
 |---|---|
 | [**topic-scout**](./topic-scout) | Finds blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X — years of real questions in buyers' own words, plus live complaints and outage reports — detects vendor astroturfing (and shows you which keywords competitors seed), and flags "changing right now" events (deprecations, breakage, pricing changes) before search volume exists. Every finding carries its source URL. |
 | [**mention-scout**](./mention-scout) | Finds live conversations where your brand can genuinely join in: fresh "best tool for…?" asks, competitor complaints and outages, and unanswered mentions of your own brand — ranked by freshness and answerability, with a suggested angle for each reply. Disclosed engagement only; astroturfed threads are flagged as traps, not opportunities. |
-| [**juicer**](./juicer) | API reference, not a workflow: install it and your agent knows how to drive the Juicer API — both surfaces (feeds, moderation, embed codes, webhooks + cross-platform data lookups), email-only signup, endpoint map, and the gotchas that aren't in the docs. For building your own thing on the API. |
+| [**juicer**](./SKILL.md) | API reference, not a workflow: install it and your agent knows how to drive the Juicer API — both surfaces (feeds, moderation, embed codes, webhooks + cross-platform data lookups), email-only signup, endpoint map, and the gotchas that aren't in the docs. For building your own thing on the API. |
 
 More coming: brand monitoring (change detection on competitors and your own
 mentions), idea validation as a standalone quick check.
 
 ## Install
 
-**Claude Code (recommended):**
+**Claude Code (recommended):** one plugin, all three skills:
 
 ```
 /plugin marketplace add juicer-io/skills
+/plugin install juicer@juicer-skills
+```
+
+Or install a single skill on its own:
+
+```
 /plugin install topic-scout@juicer-skills
 /plugin install mention-scout@juicer-skills
-/plugin install juicer@juicer-skills
 ```
 
 **Any other agent** — each skill is a self-contained folder of instructions
@@ -36,14 +41,15 @@ mentions), idea validation as a standalone quick check.
 skills directory:
 
 ```bash
+mkdir -p ~/.claude/skills/juicer && cp SKILL.md ~/.claude/skills/juicer/   # gives you /juicer
 cp -r topic-scout/skills/topic-scout mention-scout/skills/mention-scout ~/.claude/skills/
 ```
 
 **Then just ask.** Say "find me blog topic ideas" (topic-scout) or "where
 should we reply on Reddit this week?" (mention-scout). The first run
 interviews you about your brand and signs you up for a free API key with just
-your email; the skills share that config and key. Direct invocation:
-`/topic-scout:topic-scout` and `/mention-scout:mention-scout`.
+your email; the skills share that config and key. Direct invocation from the bundle:
+`/juicer:topic-scout`, `/juicer:mention-scout`, `/juicer:juicer`.
 
 ## What you'll get
 
