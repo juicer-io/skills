@@ -25,7 +25,7 @@
     "marketing"
   ],
   "skills": [
-    "./juicer/skills/juicer",
+    "./",
     "./topic-scout/skills/topic-scout",
     "./mention-scout/skills/mention-scout"
   ]
