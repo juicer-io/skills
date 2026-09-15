@@ -13,9 +13,9 @@ you never open a dashboard.
 
 | Skill | What it does |
 |---|---|
-| [**topic-scout**](./topic-scout) | Finds blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X — years of real questions in buyers' own words, plus live complaints and outage reports — detects vendor astroturfing (and shows you which keywords competitors seed), and flags "changing right now" events (deprecations, breakage, pricing changes) before search volume exists. Every finding carries its source URL. |
-| [**mention-scout**](./mention-scout) | Finds live conversations where your brand can genuinely join in: fresh "best tool for…?" asks, competitor complaints and outages, and unanswered mentions of your own brand — ranked by freshness and answerability, with a suggested angle for each reply. Disclosed engagement only; astroturfed threads are flagged as traps, not opportunities. |
-| [**juicer**](./SKILL.md) | API reference, not a workflow: install it and your agent knows how to drive the Juicer API — both surfaces (feeds, moderation, embed codes, webhooks + cross-platform data lookups), email-only signup, endpoint map, and the gotchas that aren't in the docs. For building your own thing on the API. |
+| [**topic-scout**](./skills/topic-scout) | Finds blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X — years of real questions in buyers' own words, plus live complaints and outage reports — detects vendor astroturfing (and shows you which keywords competitors seed), and flags "changing right now" events (deprecations, breakage, pricing changes) before search volume exists. Every finding carries its source URL. |
+| [**mention-scout**](./skills/mention-scout) | Finds live conversations where your brand can genuinely join in: fresh "best tool for…?" asks, competitor complaints and outages, and unanswered mentions of your own brand — ranked by freshness and answerability, with a suggested angle for each reply. Disclosed engagement only; astroturfed threads are flagged as traps, not opportunities. |
+| [**juicer**](./skills/juicer) | API reference, not a workflow: install it and your agent knows how to drive the Juicer API — both surfaces (feeds, moderation, embed codes, webhooks + cross-platform data lookups), email-only signup, endpoint map, and the gotchas that aren't in the docs. For building your own thing on the API. |
 
 More coming: brand monitoring (change detection on competitors and your own
 mentions), idea validation as a standalone quick check.
@@ -36,28 +36,35 @@ Or install a single skill on its own:
 /plugin install mention-scout@juicer-skills
 ```
 
-**Any other agent** — each skill is a self-contained folder of instructions
-(no runtime, no dependencies beyond `curl` + `jq`). Copy it into your agent's
-skills directory:
+**Any other agent** (Cursor, Codex, Gemini CLI, Copilot and more):
 
 ```bash
-mkdir -p ~/.claude/skills/juicer && cp SKILL.md ~/.claude/skills/juicer/   # gives you /juicer
-cp -r topic-scout/skills/topic-scout mention-scout/skills/mention-scout ~/.claude/skills/
+npx skills add juicer-io/skills            # pick from the three skills
+npx skills add juicer-io/skills --all      # or install all of them
+```
+
+Each skill is a self-contained folder under [`skills/`](./skills) (no runtime,
+no dependencies beyond `curl` + `jq`), so you can also copy one straight into
+your agent's skills directory:
+
+```bash
+cp -r skills/juicer ~/.claude/skills/      # gives you /juicer
 ```
 
 **Then just ask.** Say "find me blog topic ideas" (topic-scout) or "where
 should we reply on Reddit this week?" (mention-scout). The first run
 interviews you about your brand and signs you up for a free API key with just
-your email; the skills share that config and key. Direct invocation from the bundle:
-`/juicer:topic-scout`, `/juicer:mention-scout`, `/juicer:juicer`.
+your email; the skills share that config and key. Direct invocation: `/juicer:topic-scout`, `/juicer:mention-scout`,
+`/juicer:juicer` from the plugin, or `/topic-scout`, `/mention-scout`, `/juicer`
+when installed as plain skills.
 
 ## What you'll get
 
 Real outputs from runs on our own brand:
 
-- [topic-scout example report](./topic-scout/example-report.md) — including
+- [topic-scout example report](./examples/topic-scout-report.md) — including
   the moment it caught a competitor's 29-post astroturf network.
-- [mention-scout example report](./mention-scout/example-report.md) —
+- [mention-scout example report](./examples/mention-scout-report.md) —
   including a churned trial worth winning back and a seeded thread flagged
   "do not engage."
 

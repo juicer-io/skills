@@ -12,17 +12,32 @@
       "source": "./",
       "description": "Social media data and feed API to search posts, brand mentions, hashtags, subreddits and profiles, and to aggregate, moderate and embed social feeds on any website, across 15+ platforms Reddit, X, Instagram, Facebook, TikTok, YouTube, LinkedIn, Pinterest, Bluesky, Tumblr, Vimeo, Flickr, Giphy and more",
       "category": "marketing",
-      "homepage": "https://developers.juicer.io"
+      "homepage": "https://developers.juicer.io",
+      "skills": [
+        "./skills/juicer",
+        "./skills/topic-scout",
+        "./skills/mention-scout"
+      ]
     },
     {
       "name": "topic-scout",
-      "source": "./topic-scout",
-      "description": "Find blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X (years of real questions, live complaints and outages), detects vendor astroturfing and shows which keywords competitors seed, and flags 'changing right now' events before search volume exists. Every finding carries its source URL."
+      "source": "./",
+      "description": "Find blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X (years of real questions, live complaints and outages), detects vendor astroturfing and shows which keywords competitors seed, and flags 'changing right now' events before search volume exists. Every finding carries its source URL.",
+      "skills": [
+        "./skills/topic-scout"
+      ],
+      "displayName": "Topic Scout",
+      "category": "marketing"
     },
     {
       "name": "mention-scout",
-      "source": "./mention-scout",
-      "description": "Find live conversations where your brand can genuinely join in — fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps."
+      "source": "./",
+      "description": "Find live conversations where your brand can genuinely join in — fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps.",
+      "skills": [
+        "./skills/mention-scout"
+      ],
+      "displayName": "Mention Scout",
+      "category": "marketing"
     }
   ]
 }
