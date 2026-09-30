@@ -1,80 +1,61 @@
-# Juicer Agent Skills
+# Juicer
 
-**Marketing skills for AI agents, powered by live social data.**
+**Teach your AI agent to drive the Juicer social media API.**
 
-Skills in this repo teach your coding agent (Claude Code and compatible
-harnesses) to do real marketing work using the
-[Juicer Data API](https://www.juicer.io/api) ([docs](https://developers.juicer.io))
-— one API over Reddit, X, Instagram, TikTok, Facebook, YouTube, LinkedIn, and
-more. No per-platform OAuth, no scraping setup. Skills sign you up for a free API key in-flow with just your email —
-you never open a dashboard.
+The `juicer` skill gives Claude, Codex, Cursor and other agents working
+knowledge of the [Juicer API](https://www.juicer.io/api)
+([docs](https://developers.juicer.io)): one API over Reddit, X, Instagram,
+Facebook, TikTok, YouTube, LinkedIn, Pinterest, Bluesky, Tumblr, Vimeo, Flickr,
+Giphy and more. No per-platform OAuth, no scraping setup.
 
-## Skills
+## What your agent can do with it
 
-| Skill | What it does |
-|---|---|
-| [**topic-scout**](./skills/topic-scout) | Finds blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X — years of real questions in buyers' own words, plus live complaints and outage reports — detects vendor astroturfing (and shows you which keywords competitors seed), and flags "changing right now" events (deprecations, breakage, pricing changes) before search volume exists. Every finding carries its source URL. |
-| [**mention-scout**](./skills/mention-scout) | Finds live conversations where your brand can genuinely join in: fresh "best tool for…?" asks, competitor complaints and outages, and unanswered mentions of your own brand — ranked by freshness and answerability, with a suggested angle for each reply. Disclosed engagement only; astroturfed threads are flagged as traps, not opportunities. |
-| [**juicer**](./skills/juicer) | API reference, not a workflow: install it and your agent knows how to drive the Juicer API — both surfaces (feeds, moderation, embed codes, webhooks + cross-platform data lookups), email-only signup, endpoint map, and the gotchas that aren't in the docs. For building your own thing on the API. |
-
-More coming: brand monitoring (change detection on competitors and your own
-mentions), idea validation as a standalone quick check.
+- **Look up social data without building anything:** posts for a keyword,
+  hashtag, handle, subreddit or YouTube channel across several platforms in one
+  call, plus canonical profiles per platform.
+- **Build and run social feeds:** create feeds, add sources, moderate posts,
+  pull analytics, and get embed codes (JavaScript, iframe, WordPress shortcode)
+  for putting a social wall on any website.
+- **Wire up the rest:** webhooks, OAuth connections for social accounts, and
+  team users on multi-tenant accounts.
+- **Avoid the mistakes that aren't in the docs:** per-platform pagination
+  cursors, loose keyword matching that needs re-filtering, rate limits, and
+  key lifetimes.
 
 ## Install
 
-**Claude Code (recommended):** one plugin, all three skills:
+**Claude Code:**
 
 ```
 /plugin marketplace add juicer-io/skills
 /plugin install juicer@juicer-skills
 ```
 
-Or install a single skill on its own:
-
-```
-/plugin install topic-scout@juicer-skills
-/plugin install mention-scout@juicer-skills
-```
-
 **Any other agent** (Cursor, Codex, Gemini CLI, Copilot and more):
 
 ```bash
-npx skills add juicer-io/skills            # pick from the three skills
-npx skills add juicer-io/skills --all      # or install all of them
+npx skills add juicer-io/skills
 ```
 
-Each skill is a self-contained folder under [`skills/`](./skills) (no runtime,
-no dependencies beyond `curl` + `jq`), so you can also copy one straight into
-your agent's skills directory:
+Or copy the folder straight into your agent's skills directory:
 
 ```bash
-cp -r skills/juicer ~/.claude/skills/      # gives you /juicer
+cp -r skills/juicer ~/.claude/skills/
 ```
 
-**Then just ask.** Say "find me blog topic ideas" (topic-scout) or "where
-should we reply on Reddit this week?" (mention-scout). The first run
-interviews you about your brand and signs you up for a free API key with just
-your email; the skills share that config and key. Direct invocation: `/juicer:topic-scout`, `/juicer:mention-scout`,
-`/juicer:juicer` from the plugin, or `/topic-scout`, `/mention-scout`, `/juicer`
-when installed as plain skills.
+**Then just ask:** "what are people on Reddit saying about Notion?", "embed
+our Instagram and TikTok on the homepage", "pull last week's posts for
+#coffee on Instagram and X". Invoke it directly with `/juicer` (`/juicer:juicer` when installed as a plugin).
 
-## What you'll get
+## What it runs and sends
 
-Real outputs from runs on our own brand:
-
-- [topic-scout example report](./examples/topic-scout-report.md) — including
-  the moment it caught a competitor's 29-post astroturf network.
-- [mention-scout example report](./examples/mention-scout-report.md) —
-  including a churned trial worth winning back and a seeded thread flagged
-  "do not engage."
-
-## Principles
-
-- **Evidence, linked.** Every claim in every report carries its source URL.
-- **Signal nominates, never decides.** Outputs end with a validation
-  checklist, not a publish button.
-- **Real voices only.** Distinct authors over years — never engagement sums,
-  never astroturf.
+The skill is instructions only: no scripts, no binaries, no dependencies
+beyond `curl` and `jq`. When you ask it to act, your agent calls
+`https://api.juicer.io/v1` with your Juicer API key as a Bearer token and
+nothing else. The key comes from `JUICER_API_KEY` if you set one, or from
+Juicer's email-only signup (`POST /v1/authorize`), which sends only the email
+address you give it and returns a free session key. No data goes anywhere
+except the Juicer API.
 
 ## License
 

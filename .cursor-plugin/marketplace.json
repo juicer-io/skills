@@ -5,7 +5,7 @@
     "email": "team@juicer.io"
   },
   "metadata": {
-    "description": "Agent skills by the Juicer team — social-signal tools for marketers, powered by the Juicer Data API."
+    "description": "The Juicer agent skill: drive the Juicer social media data and feed API from any agent."
   },
   "plugins": [
     {
@@ -43,9 +43,7 @@
         "marketing"
       ],
       "skills": [
-        "./skills/juicer",
-        "./skills/topic-scout",
-        "./skills/mention-scout"
+        "./skills/juicer"
       ]
     }
   ]
