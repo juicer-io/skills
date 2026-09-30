@@ -435,10 +435,7 @@ curl -s "https://api.juicer.io/v1/data/posts?term=ugc&term_type=hashtag&platform
 - OpenAPI spec: https://developers.juicer.io/openapi/v1.yaml
 - Docs (markdown by appending `.md`): https://developers.juicer.io
 - Product page: https://www.juicer.io/api
-- Sibling skills built on this API:
-  - `topic-scout`: find blog topics from competitor mentions across Reddit and X
-  - `mention-scout`: find live conversations your brand can join
-  - https://github.com/juicer-io/skills
+- Source: https://github.com/juicer-io/skills
 
 ---
 

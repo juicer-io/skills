@@ -1,5 +1,4 @@
-# runtime artifacts if someone runs a skill inside this repo
-topic-scout-data/
+# runtime artifacts if someone runs the skill inside this repo
 .env
 session.json
 .DS_Store

@@ -1,6 +1,6 @@
 {
   "name": "juicer-skills",
-  "description": "Agent skills by the Juicer team — social-signal tools for marketers, powered by the Juicer Data API.",
+  "description": "The Juicer agent skill: drive the Juicer social media data and feed API from any agent.",
   "owner": {
     "name": "Juicer",
     "email": "team@juicer.io"
@@ -14,30 +14,8 @@
       "category": "marketing",
       "homepage": "https://developers.juicer.io",
       "skills": [
-        "./skills/juicer",
-        "./skills/topic-scout",
-        "./skills/mention-scout"
+        "./skills/juicer"
       ]
-    },
-    {
-      "name": "topic-scout",
-      "source": "./",
-      "description": "Find blog topics your buyers are actually asking for. Mines competitor brand mentions across Reddit and X (years of real questions, live complaints and outages), detects vendor astroturfing and shows which keywords competitors seed, and flags 'changing right now' events before search volume exists. Every finding carries its source URL.",
-      "skills": [
-        "./skills/topic-scout"
-      ],
-      "displayName": "Topic Scout",
-      "category": "marketing"
-    },
-    {
-      "name": "mention-scout",
-      "source": "./",
-      "description": "Find live conversations where your brand can genuinely join in — fresh recommendation-asks, competitor complaints, and unanswered mentions of your brand across Reddit and X. Disclosed engagement only; flags astroturfed threads as traps.",
-      "skills": [
-        "./skills/mention-scout"
-      ],
-      "displayName": "Mention Scout",
-      "category": "marketing"
     }
   ]
 }
