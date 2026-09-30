@@ -223,7 +223,7 @@ curl -s -X POST https://api.juicer.io/v1/feeds/<feed_id>/posts/bulk -H "$H" -H "
 
 ```bash
 curl -s https://api.juicer.io/v1/feeds/<feed_id>/embed -H "$H"       # code snippets
-curl -s "https://api.juicer.io/v1/search/posts?q=<Q>" -H "$H"         # across all your feeds
+curl -s "https://api.juicer.io/v1/search/posts?query=<Q>" -H "$H"         # across all your feeds
 curl -s https://api.juicer.io/v1/feeds/<feed_id>/analytics -H "$H"
 ```
 
@@ -482,7 +482,7 @@ curl -s -X POST $B/feeds/<id>/sources -H "$H" -H "$J" -d '{"platform":"...","ter
 curl -s $B/feeds/<id>/posts -H "$H"                                                       # moderate: /approve /reject /pin /unpin
 curl -s $B/feeds/<id>/embed -H "$H"                                                       # embed code
 curl -s $B/feeds/<id>/analytics -H "$H"
-curl -s "$B/search/posts?q=<Q>" -H "$H"                                                   # across all feeds
+curl -s "$B/search/posts?query=<Q>" -H "$H"                                                   # across all feeds
 curl -s $B/webhooks -H "$H"                                                               # + /test, /deliveries, /redeliver
 curl -s -X POST $B/social_accounts/connect_url -H "$H" -H "$J" -d '{"provider":"facebook"}'
 
