@@ -52,10 +52,11 @@ our Instagram and TikTok on the homepage", "pull last week's posts for
 The skill is instructions only: no scripts, no binaries, no dependencies
 beyond `curl` and `jq`. When you ask it to act, your agent calls
 `https://api.juicer.io/v1` with your Juicer API key as a Bearer token and
-nothing else. The key comes from `JUICER_API_KEY` if you set one, or from
-Juicer's email-only signup (`POST /v1/authorize`), which sends only the email
-address you give it and returns a free session key. No data goes anywhere
-except the Juicer API.
+nothing else. The key is one you paste into the session from the Juicer
+dashboard, or one from Juicer's email-only signup (`POST /v1/authorize`),
+which sends only the email address you give it and returns a free session
+key. The skill never reads a key from your environment or files. No data goes
+anywhere except the Juicer API.
 
 ## License
 

@@ -38,9 +38,9 @@ No CLI, no SDK, no dashboard required.
 ## ⚠️ Four Hard Rules (Read First)
 
 **Rule 1 — Get a key before anything, and never mint a second one to escape a
-confirmation gate.** Use `JUICER_API_KEY` if set, otherwise `POST /authorize`
-with just an email. If a data call returns
-`error.code = "email_confirmation_required"`, the user must click the
+confirmation gate.** Ask the user to paste a key, otherwise `POST /authorize`
+with just an email. Never read a key from the user's environment or files. If
+a data call returns `error.code = "email_confirmation_required"`, the user must click the
 confirmation email. The SAME key unlocks after confirmation. A new
 `/authorize` call does not help.
 
@@ -72,10 +72,12 @@ All requests: `Authorization: Bearer jcr_...`
 
 **Option 1: Permanent key (recommended for anything long-lived)**
 
-From the Developer page in the Juicer dashboard.
+Ask the user to paste a key from the Developer page in the Juicer dashboard.
+Hold it in a shell variable for the session; do not read it from the
+environment or from files on disk.
 
 ```bash
-export JUICER_API_KEY=jcr_...
+KEY=jcr_...   # pasted by the user this session
 ```
 
 **Option 2: Email-only signup, no dashboard**
@@ -98,7 +100,7 @@ curl -s -X POST https://api.juicer.io/v1/authorize \
 Verify before doing anything else:
 
 ```bash
-curl -s https://api.juicer.io/v1/account -H "Authorization: Bearer $JUICER_API_KEY"
+curl -s https://api.juicer.io/v1/account -H "Authorization: Bearer $KEY"
 ```
 
 **Rate limits:** 300 req/hr, 60 req/min on confirmed free keys. 429 on breach;
@@ -123,18 +125,18 @@ Two surfaces, one key:
 
 ```bash
 # 1. Authenticate
-curl -s https://api.juicer.io/v1/account -H "Authorization: Bearer $JUICER_API_KEY"
+curl -s https://api.juicer.io/v1/account -H "Authorization: Bearer $KEY"
 
 # 2. Discover what each platform supports
-curl -s https://api.juicer.io/v1/platforms -H "Authorization: Bearer $JUICER_API_KEY"
+curl -s https://api.juicer.io/v1/platforms -H "Authorization: Bearer $KEY"
 
 # 3. Query
 curl -s "https://api.juicer.io/v1/data/posts?term=Flockler&term_type=mentions&platforms=Reddit,Twitter" \
-  -H "Authorization: Bearer $JUICER_API_KEY"
+  -H "Authorization: Bearer $KEY"
 
 # 4. Page (per platform, Rule 2)
 curl -s "https://api.juicer.io/v1/data/posts?term=Flockler&term_type=mentions&platforms=Reddit&cursor=$CURSOR" \
-  -H "Authorization: Bearer $JUICER_API_KEY"
+  -H "Authorization: Bearer $KEY"
 
 # 5. Filter (Rule 3), then report with source URLs
 ```
@@ -144,7 +146,7 @@ curl -s "https://api.juicer.io/v1/data/posts?term=Flockler&term_type=mentions&pl
 ```bash
 # 1. Authenticate
 # 2. Check connections
-curl -s https://api.juicer.io/v1/social_accounts/status -H "Authorization: Bearer $JUICER_API_KEY"
+curl -s https://api.juicer.io/v1/social_accounts/status -H "Authorization: Bearer $KEY"
 # 3. Create feed
 # 4. Add sources
 # 5. Moderate posts
@@ -156,7 +158,8 @@ curl -s https://api.juicer.io/v1/social_accounts/status -H "Authorization: Beare
 
 ## Essential Commands
 
-Every example below assumes `H='Authorization: Bearer '"$JUICER_API_KEY"` and
+Every example below assumes `KEY` holds the session key from Option 1 or 2,
+`H='Authorization: Bearer '"$KEY"` and
 `J='Content-Type: application/json'`.
 
 ### Account and discovery
@@ -271,7 +274,7 @@ curl -s -X DELETE https://api.juicer.io/v1/users/<user_id>/feeds/<feed_id> -H "$
 ```bash
 #!/bin/bash
 TERM="Flockler"; PLATFORM="Reddit"; MAX_PAGES=3
-H="Authorization: Bearer $JUICER_API_KEY"
+H="Authorization: Bearer $KEY"
 CURSOR=""; PAGE=0
 > posts.jsonl
 while :; do
@@ -299,7 +302,7 @@ history. Do not over-page.
 ### Pattern 2: Cross-platform brand monitor
 
 ```bash
-H="Authorization: Bearer $JUICER_API_KEY"
+H="Authorization: Bearer $KEY"
 for P in Reddit Twitter TikTok; do
   curl -s "https://api.juicer.io/v1/data/posts?term=juicer&term_type=mentions&platforms=$P" -H "$H" \
     | jq -c --arg p "$P" '.data[] | {p:$p, at:.post_created_at, likes:.like_count, url, msg:(.message|gsub("<[^>]*>";"")|.[0:140])}'
@@ -321,7 +324,7 @@ curl -s "https://api.juicer.io/v1/data/posts?term=webdev&term_type=channel&platf
 ### Pattern 4: Feed → source → embed on a website
 
 ```bash
-H="Authorization: Bearer $JUICER_API_KEY"; J="Content-Type: application/json"
+H="Authorization: Bearer $KEY"; J="Content-Type: application/json"
 FEED=$(curl -s -X POST https://api.juicer.io/v1/feeds -H "$H" -H "$J" -d '{"name":"My Wall"}' | jq -r '.id')
 curl -s -X POST "https://api.juicer.io/v1/feeds/$FEED/sources" -H "$H" -H "$J" \
   -d '{"platform":"Instagram","term":"myhandle","term_type":"username"}'
@@ -460,7 +463,7 @@ curl -s "https://api.juicer.io/v1/data/posts?term=ugc&term_type=hashtag&platform
 ## Quick Reference
 
 ```bash
-H="Authorization: Bearer $JUICER_API_KEY"; J="Content-Type: application/json"
+H="Authorization: Bearer $KEY"; J="Content-Type: application/json"
 B=https://api.juicer.io/v1
 
 # ⚠️ AUTHENTICATE FIRST
