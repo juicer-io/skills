@@ -82,20 +82,40 @@ KEY=jcr_...   # pasted by the user this session
 
 **Option 2: Email-only signup, no dashboard**
 
+Ask the user for their email, then:
+
 ```bash
-curl -s -X POST https://api.juicer.io/v1/authorize \
+RESP=$(curl -s -X POST https://api.juicer.io/v1/authorize \
   -H "Content-Type: application/json" \
-  -d '{"email":"you@company.com","client_name":"My Tool"}'
+  -d '{"email":"you@company.com","client_name":"My Tool"}')
+echo "$RESP" | jq .
+KEY=$(echo "$RESP" | jq -r '.api_key // empty')
 ```
 
-- **201** (new or unconfirmed email): `api_key` returned immediately, 2h TTL,
-  60 req/hr. Data endpoints return `email_confirmation_required` until the
-  user clicks the confirmation email. After confirming, the same key extends
-  to 12h and 300 req/hr.
-- **202** (existing confirmed user): device flow. Show the user
-  `authorization_url`, poll `poll_url` every 2s. 200 carries the key (returned
-  exactly once), 410 means denied or expired. Requests expire in ~10 min.
+- **201** (new or unconfirmed email): `status: "issued"`, `api_key` returned
+  immediately, so `KEY` is set. 2h TTL, 60 req/hr. Data endpoints return
+  `email_confirmation_required` until the user clicks the confirmation email.
+  After confirming, the same key extends to 12h and 300 req/hr.
+- **202** (existing confirmed user): `status: "pending_authorization"`, no
+  `api_key` yet. Show the user `authorization_url`, then poll `poll_url` every
+  2s. The key is returned exactly once; 410 means denied, expired, or already
+  delivered. Requests expire in ~10 min.
+
+```bash
+echo "Open this to approve: $(echo "$RESP" | jq -r '.authorization_url')"
+POLL=$(echo "$RESP" | jq -r '.poll_url')
+while :; do
+  R=$(curl -s -w '\n%{http_code}' "$POLL"); CODE=${R##*$'\n'}; BODY=${R%$'\n'*}
+  case $CODE in
+    200) KEY=$(echo "$BODY" | jq -r '.api_key'); break ;;
+    202) sleep 2 ;;
+    *)   echo "$BODY" | jq .; exit 1 ;;   # 410 denied/expired/already delivered
+  esac
+done
+```
+
 - Every `/authorize` key is a 12h-max session key. It never revokes other keys.
+- `422 invalid_email` means the address was rejected; ask again.
 
 Verify before doing anything else:
 
