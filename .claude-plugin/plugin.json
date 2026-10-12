@@ -1,7 +1,7 @@
 {
   "name": "juicer",
   "displayName": "Juicer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Social media data and feed API to search posts, brand mentions, hashtags, subreddits and profiles, and to aggregate, moderate and embed social feeds on any website, across 15+ platforms Reddit, X, Instagram, Facebook, TikTok, YouTube, LinkedIn, Pinterest, Bluesky, Tumblr, Vimeo, Flickr, Giphy and more",
   "author": {
     "name": "Juicer",
@@ -11,6 +11,11 @@
   "homepage": "https://developers.juicer.io",
   "repository": "https://github.com/juicer-io/skills",
   "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "documentationUrl": "https://developers.juicer.io",
+  "supportUrl": "https://www.juicer.io/contact",
+  "privacyPolicyUrl": "https://www.juicer.io/privacy",
+  "termsOfServiceUrl": "https://www.juicer.io/terms",
   "keywords": [
     "juicer",
     "social-media",
