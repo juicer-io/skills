@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "juicer": {
+      "type": "http",
+      "url": "https://api.juicer.io/mcp"
+    }
+  }
+}
