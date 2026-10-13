@@ -344,19 +344,41 @@ Everyday-word terms (like "juicer") return an ambient firehose. A full page
 spanning ≤3 days is the tell. Prefer the distinctive brand word; avoid dotted
 domains (`walls.io` returns unrelated results, use `walls`).
 
-### Pattern 3: What a community is talking about
+### Pattern 3: A brand's latest posts across every network
+
+"Give me Juicer's last 5 posts on all social networks" is one `get_data_posts`
+call, but a bare handle means different people on different platforms:
+`juicer` is the brand on LinkedIn and TikTok, a hairstyle seller on
+Pinterest, an unrelated person on X. Never pass one handle to every platform.
+
+1. Ask the user for the handle per platform, or resolve with
+   `get_data_profiles {term, platforms}` and keep only matches whose
+   `display_name` is the brand (`exact_match` only says the handle exists).
+2. Call `get_data_posts {term:<handle>, platforms:<that platform>,
+   term_type:"username"}` for the confirmed platforms only; a wrong handle
+   still costs credits and returns a stranger's feed. Group several platforms
+   in one call only when they share the handle.
+3. There is no `limit` parameter: take the newest N per platform from each
+   page (`post_created_at`), or merge and sort across platforms.
+4. Bluesky needs the full handle (`juicer.bsky.social`); Instagram and
+   Facebook fail with `invalid_term` when the account does not exist.
+
+Twelve platforms in one call cost about 19 credits. On a Sandbox key that is
+most of the lifetime budget, so confirm the platforms before calling.
+
+### Pattern 4: What a community is talking about
 
 `get_data_posts {term:"webdev", platforms:"Reddit", term_type:"channel"}` or
 `{term:"nasa", platforms:"YouTube"}` (channel auto-detected). Sort by
 `comment_count` or `like_count` on your side.
 
-### Pattern 4: Feed → source → embed on a website
+### Pattern 5: Feed → source → embed on a website
 
 `create_feed {name}` → `create_source {feed_id, platform:"Instagram",
 term:"myhandle", term_type:"username"}` → `get_feed_embed {feed_id}` → give
 the user `.data.javascript` (or `.iframe`, or the WordPress shortcode).
 
-### Pattern 5: Handle a missing social connection
+### Pattern 6: Handle a missing social connection
 
 `create_source` answers `social_account_required` with
 `error.action = { type: "connect_social_account", provider, connection_url,
@@ -365,7 +387,7 @@ Juicer login needed), wait for them to confirm, then retry `create_source`.
 `create_social_account_connect_url {provider}` returns the same link on demand
 as `.data.connection_url`.
 
-### Pattern 6: Rate-limit and credit aware loop (curl)
+### Pattern 7: Rate-limit and credit aware loop (curl)
 
 ```bash
 for T in "${TERMS[@]}"; do
