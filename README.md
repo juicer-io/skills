@@ -12,8 +12,7 @@ It ships two parts: the **Juicer connector**, a remote MCP server at
 `https://api.juicer.io/mcp` with 33 tools (one per API operation, OAuth sign-in
 in the browser), and the **`juicer` skill**, which teaches the agent when and
 how to use them: credits, per-platform pagination, loose keyword matching,
-what needs a connected social account. In Claude Code the skill can also drive
-the API with `curl` when the connector is not connected.
+what needs a connected social account.
 
 ## What your agent can do with it
 
@@ -69,10 +68,8 @@ reference to the connector URL. Nothing in it holds a secret.
   sends as a Bearer token on each tool call. Tool arguments (search terms,
   handles, feed settings) are the only data sent. You can revoke the key from
   the Juicer dashboard at any time.
-- **curl path (Claude Code only):** the agent calls `https://api.juicer.io/v1`
-  with a key you paste into the session, or one from Juicer's email-only
-  signup (`POST /v1/authorize`), which sends only the email address you give
-  it. The skill never reads a key from your environment or files.
+- The skill never reads a key from your environment or files, and never
+  calls the API outside the connector.
 
 No data goes anywhere except the Juicer API. Privacy policy:
 https://www.juicer.io/privacy. Terms: https://www.juicer.io/terms.

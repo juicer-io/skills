@@ -7,7 +7,7 @@ metadata: {"openclaw":{"emoji":"🧃","requires":{"bins":[],"env":[]}}}
 
 # Juicer
 
-Read BEFORE calling any Juicer tool or writing curl against `api.juicer.io`,
+Read BEFORE calling any Juicer tool,
 and whenever the user mentions Juicer, wants posts, mentions, hashtags or a
 handle's content from one or more social platforms, wants to monitor brand or
 competitor mentions, or wants a social feed, social wall or social media embed
@@ -38,12 +38,11 @@ when the account already has feeds.
 
 ## How to call it
 
-- **Juicer connector (MCP, preferred).** 33 tools, one per API operation,
-  served from `https://api.juicer.io/mcp`. Works in claude.ai, Cowork and
-  Claude Code. Auth is OAuth in the browser; you never handle a key.
-- **curl + jq (Claude Code fallback).** Same operations against
-  `https://api.juicer.io/v1` with a Bearer key. Use it only when the connector
-  is not connected, or for shell loops over many pages. See the appendix.
+The **Juicer connector** (MCP) ships with this plugin: 33 tools, one per API
+operation, served from `https://api.juicer.io/mcp`. It works in claude.ai,
+Cowork and Claude Code. Auth is OAuth in the browser; you never handle a key.
+There is no other path: if the connector is not connected, tell the user to
+connect it rather than calling the API by hand.
 
 Every tool result is the API's JSON body as text. Read the keys named in
 each section below; fetch the OpenAPI spec for anything else.
@@ -112,8 +111,6 @@ a key when the connector is available.
 A brand-new email gets a Free feed plan and a Sandbox API plan (30 credits).
 Confirm what the account can do with `get_account` before promising anything.
 
-Without the connector (Claude Code only), see **Appendix: curl path**.
-
 ---
 
 ## Credits
@@ -143,7 +140,7 @@ Without the connector (Claude Code only), see **Appendix: curl path**.
 
 ## Tool map
 
-| Task | Tool | curl |
+| Task | Tool | Endpoint |
 |---|---|---|
 | Plan, limits, credit balance | `get_account` | `GET /account` |
 | Platforms, term types, `data_api` flag, connection needs | `list_platforms` | `GET /platforms` |
@@ -502,138 +499,19 @@ per window per feed; `list_feeds` first when the user has several.
 9. **`social_account_required`** carries an `error.action.connection_url`. Send the user there; don't guess a workaround.
 10. **`requires_connection` is Integration-API only.** The Data API works without any social connection on 14 platforms.
 11. **`fetch_timeout` on one platform** is a partial result, not a failure. Retry that platform alone.
-12. **`/authorize` keys are session keys** (12h max) and never revoke other keys. Prefer the connector or a permanent key.
-13. **`search_posts` `+` must be URL-encoded** as `%2B` in curl; a bare `+` becomes a space. The tool handles it.
-14. **This file is not the schema.** Fetch the OpenAPI spec for exact request and response shapes.
-15. **Spell platforms as `list_platforms` returns them** (`Bluesky`, `TikTok`, `X` or `Twitter`). Lowercase is `unknown_platform` on the Data API and an empty filter on `search_posts` until case-folding ships.
-16. **Connection `provider` names are not platform names.** Read them from `get_social_account_status` (`facebook`, `instagram_login`, `tiktok`, …); `instagram` is `invalid_provider`.
-17. **Free-plan limits are `isError` results with an `error.action` upgrade link**: `source_limit_reached` (1 source per feed), `user_limit_reached` (no team members), `last_feed_removal_blocked`. Show the link; do not retry.
-18. **A feed shows nothing until its first sync lands.** Wait a few seconds and call `list_feed_posts` again before declaring a source empty; check `syncable` and `unsyncable_reason` on the source if it stays empty.
+12. **`search_posts` `+` means AND, comma means OR**; the tool URL-encodes for you.
+13. **This file is not the schema.** Fetch the OpenAPI spec for exact request and response shapes.
+14. **Spell platforms as `list_platforms` returns them** (`Bluesky`, `TikTok`, `X` or `Twitter`). Lowercase is `unknown_platform` on the Data API and an empty filter on `search_posts` until case-folding ships.
+15. **Connection `provider` names are not platform names.** Read them from `get_social_account_status` (`facebook`, `instagram_login`, `tiktok`, …); `instagram` is `invalid_provider`.
+16. **Free-plan limits are `isError` results with an `error.action` upgrade link**: `source_limit_reached` (1 source per feed), `user_limit_reached` (no team members), `last_feed_removal_blocked`. Show the link; do not retry.
+17. **A feed shows nothing until its first sync lands.** Wait a few seconds and call `list_feed_posts` again before declaring a source empty; check `syncable` and `unsyncable_reason` on the source if it stays empty.
 
 ---
 
-## Appendix: curl path (Claude Code without the connector)
+## REST API
 
-All requests: `Authorization: Bearer jcr_...`. Hold the key in a shell variable
-for the session; never read one from the user's environment or files.
-
-**Option 1: the user pastes a permanent key** (Developer page in the Juicer
-dashboard):
-
-```bash
-KEY=jcr_...   # pasted by the user this session
-```
-
-**Option 2: email-only signup, no dashboard.** Ask the user for their email:
-
-```bash
-RESP=$(curl -s -X POST https://api.juicer.io/v1/authorize \
-  -H "Content-Type: application/json" \
-  -d '{"email":"you@company.com","client_name":"My Tool"}')
-echo "$RESP" | jq .
-KEY=$(echo "$RESP" | jq -r '.api_key // empty')
-```
-
-- **201** (new or unconfirmed email): `status: "issued"`, `api_key` returned,
-  so `KEY` is set. 2h TTL, 60 req/hr. Data calls return
-  `email_confirmation_required` until the user clicks the confirmation email;
-  the SAME key then extends to 12h and 300 req/hr. Never mint a second key to
-  escape that gate.
-- **202** (existing confirmed user): `status: "pending_authorization"`, no key
-  yet. Show the user `authorization_url`, then poll `poll_url` every 2s. The
-  key is returned exactly once; 410 means denied, expired or already delivered.
-
-```bash
-echo "Open this to approve: $(echo "$RESP" | jq -r '.authorization_url')"
-POLL=$(echo "$RESP" | jq -r '.poll_url')
-while :; do
-  R=$(curl -s -w '\n%{http_code}' "$POLL"); CODE=${R##*$'\n'}; BODY=${R%$'\n'*}
-  case $CODE in
-    200) KEY=$(echo "$BODY" | jq -r '.api_key'); break ;;
-    202) sleep 2 ;;
-    *)   echo "$BODY" | jq .; exit 1 ;;   # 410 denied/expired/already delivered
-  esac
-done
-```
-
-- `422 invalid_email` means the address was rejected; ask again.
-- Every `/authorize` key is a 12h-max session key and never revokes others.
-
-Verify before doing anything else:
-
-```bash
-curl -s https://api.juicer.io/v1/account -H "Authorization: Bearer $KEY"
-```
-
-**Rate limits:** 300 req/hr, 60 req/min on confirmed free keys. 429 on breach;
-back off, the body includes an upgrade hint. Space loop requests ~1.2s apart.
-
-| Key | TTL | Rate limit |
-|---|---|---|
-| Connector (OAuth) or dashboard | none | plan-dependent |
-| `/authorize`, unconfirmed | 2h | 60 req/hr, data calls gated |
-| `/authorize`, confirmed | 12h | 300 req/hr, 60 req/min |
-
-### Quick reference
-
-```bash
-H="Authorization: Bearer $KEY"; J="Content-Type: application/json"
-B=https://api.juicer.io/v1
-
-# Discovery
-curl -s $B/account -H "$H"                                                                # plan, limits, credits.balance
-curl -s $B/platforms -H "$H"                                                              # term types, data_api flag
-curl -s $B/social_accounts/status -H "$H"                                                 # connections needed
-
-# Data API (no feed, no connection; costs credits)
-curl -s "$B/data/posts?term=<T>&term_type=mentions|channel|hashtag|username|reviews&platforms=<P1,P2>" -H "$H"
-curl -s "$B/data/posts?...&cursor=<C1>,<C2>" -H "$H"                                      # next page per platform
-curl -s "$B/data/profiles?term=<h1,h2>&platforms=<P>" -H "$H"                             # canonical profiles
-
-# Integration API (free)
-curl -s $B/feeds -H "$H"                                                                  # list_feeds (page, per_page)
-curl -s -X POST $B/feeds -H "$H" -H "$J" -d '{"name":"My Wall"}'                          # create_feed → .data.id
-curl -s -X PATCH $B/feeds/<id> -H "$H" -H "$J" -d '{"queue":true}'                        # update_feed
-curl -s -X POST $B/feeds/<id>/sources -H "$H" -H "$J" \
-  -d '{"platform":"Instagram","term":"myhandle","term_type":"username"}'                 # create_source
-curl -s "$B/feeds/<id>/posts?status=moderated" -H "$H"                                    # list_feed_posts (public|moderated|rejected)
-curl -s -X POST $B/feeds/<id>/posts/<pid>/approve -H "$H"                                 # moderate_post (approve|reject|pin|unpin), DELETE for delete
-curl -s -X POST $B/feeds/<id>/posts/bulk -H "$H" -H "$J" \
-  -d '{"action_type":"approve","post_ids":[1,2]}'                                         # bulk_moderate_posts (or "tab")
-curl -s $B/feeds/<id>/embed -H "$H"                                                       # get_feed_embed → .data.javascript / .iframe
-curl -s "$B/search/posts?query=<Q>&feed_ids=1,2" -H "$H"                                   # search_posts (+ as %2B for AND; comma = OR)
-curl -s "$B/feeds/<id>/analytics?start=2026-09-01&end=2026-09-30" -H "$H"                 # get_feed_analytics
-curl -s -X POST $B/social_accounts/connect_url -H "$H" -H "$J" -d '{"provider":"facebook"}'  # → .data.connection_url
-curl -s -X POST $B/webhooks -H "$H" -H "$J" -d '{"url":"https://…","subscribed_events":["post.created"]}'
-curl -s -X POST $B/webhooks/<id>/test -H "$H"                                             # test_webhook
-curl -s -X POST $B/users -H "$H" -H "$J" -d '{"email":"a@b.co","role":"collaborator","feed_ids":[1]}'
-curl -s -X PUT $B/users/<uid>/feeds/<fid> -H "$H"                                         # assign_user_feed; DELETE to unassign
-
-# Schemas
-curl -s https://developers.juicer.io/openapi/v1.yaml
-```
-
-### Paged Data API loop (credit and rate-limit aware)
-
-```bash
-TERM="Notion"; PLATFORM="Reddit"; MAX_PAGES=3
-H="Authorization: Bearer $KEY"; CURSOR=""; PAGE=0
-> posts.jsonl
-while :; do
-  URL="https://api.juicer.io/v1/data/posts?term=$TERM&term_type=mentions&platforms=$PLATFORM"
-  [ -n "$CURSOR" ] && URL="$URL&cursor=$CURSOR"
-  CODE=$(curl -s -o out.json -w '%{http_code}' "$URL" -H "$H")
-  case $CODE in
-    429) sleep 15; continue ;;
-    402|4*|5*) jq . out.json; exit 1 ;;    # Rule 5: insufficient_credits, email_confirmation_required, …
-  esac
-  jq -c --arg t "$TERM" '
-    .data[] | .message |= gsub("<[^>]*>";"")
-    | select(.message | test("\\b" + $t + "\\b"; "i"))' out.json >> posts.jsonl   # Rule 3
-  PAGE=$((PAGE+1))
-  CURSOR=$(jq -r '.meta.platforms[] | select(.success and .has_more) | .next_cursor' out.json | head -1)
-  [ -z "$CURSOR" ] || [ "$PAGE" -ge "$MAX_PAGES" ] && break
-  sleep 1.2
-done
-jq -r '[.post_created_at, .poster.name, .url] | @tsv' posts.jsonl
-```
+Every tool is a thin wrapper over one `https://api.juicer.io/v1` endpoint; the
+Tool map above names the endpoint next to each tool. Request and response
+shapes, error codes and the OpenAPI spec live at
+https://developers.juicer.io. Use the connector; do not hand-roll HTTP calls or
+handle API keys in this skill.
