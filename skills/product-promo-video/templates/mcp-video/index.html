@@ -1,0 +1,347 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Juicer MCP video</title>
+<style>
+@font-face{font-family:G;src:local("Proxima Nova Regular"),local("ProximaNova-Regular"),local("Montserrat Regular"),local("Montserrat-Regular");font-weight:400}
+@font-face{font-family:G;src:local("Proxima Nova Medium"),local("ProximaNova-Medium"),local("Montserrat SemiBold"),local("Montserrat-SemiBold");font-weight:500}
+@font-face{font-family:G;src:local("Proxima Nova Semibold"),local("ProximaNova-Semibold"),local("Montserrat SemiBold"),local("Montserrat-SemiBold");font-weight:600}
+@font-face{font-family:G;src:local("Proxima Nova Bold"),local("ProximaNova-Bold"),local("Montserrat Bold"),local("Montserrat-Bold");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#102738}
+body{font-family:G,Helvetica,sans-serif;color:#1B2A3D;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden}
+#bg{position:absolute;inset:0;background:#102738}
+#letters{position:absolute;top:120px;font-size:760px;font-weight:700;letter-spacing:-18px;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);line-height:.9;white-space:nowrap}
+#wm{position:absolute;left:72px;top:56px;height:46px;z-index:50}
+#tag{position:absolute;right:56px;bottom:40px;z-index:50;font-size:22px;font-weight:500;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px}
+
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5}
+.h1{font-size:116px;font-weight:600;color:#fff;letter-spacing:-2.5px;line-height:1.18;text-align:center;white-space:nowrap}
+.w{display:inline-block;will-change:transform,opacity,filter}
+.pill{background:#F05B4A;color:#fff;padding:0 30px 8px;border-radius:26px;box-shadow:0 20px 50px rgba(4,14,24,.25)}
+.h2c{font-size:70px;font-weight:500;color:#fff;letter-spacing:-1.5px;line-height:1.18;text-align:center;margin-top:90px}
+.h2c b,.hl b{font-weight:700;color:#F05B4A}
+
+/* scene 2 */
+#s2row{position:relative;width:1140px;height:330px}
+.tile{position:absolute;top:0;width:260px;height:260px;background:#fff;border-radius:40px;box-shadow:0 30px 80px rgba(4,14,24,.28);display:flex;align-items:center;justify-content:center}
+.tlabel{position:absolute;top:290px;width:400px;margin-left:-70px;white-space:nowrap;text-align:center;color:#fff;font-size:30px;font-weight:500}
+#line{position:absolute;left:300px;top:128px;width:540px;height:4px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.8) 0 18px,transparent 18px 32px);transform-origin:left center}
+.dot{position:absolute;top:118px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.25),0 0 30px 8px rgba(175,214,254,.9)}
+.spark{width:160px;height:160px;border-radius:50%;background:#F05B4A;display:flex;align-items:center;justify-content:center}
+
+/* chat */
+#chat{position:absolute;left:760px;top:100px;width:1060px;height:880px;background:#fff;border-radius:28px;box-shadow:0 50px 120px rgba(4,14,24,.38),0 0 0 1px rgba(255,255,255,.5);z-index:10;overflow:hidden}
+.hdr{height:88px;border-bottom:1.5px solid #EEF1F6;display:flex;align-items:center;padding:0 32px;gap:18px}
+.av{width:50px;height:50px;border-radius:50%;background:#F05B4A;display:flex;align-items:center;justify-content:center}
+.nm{font-size:29px;font-weight:600;color:#1B2A3D}
+.conn{margin-left:auto;display:flex;align-items:center;gap:10px;background:#E7F4EC;color:#1E6B41;font-size:22px;font-weight:500;padding:9px 18px;border-radius:999px}
+.conn i{width:12px;height:12px;border-radius:50%;background:#1E6B41;display:block}
+#thread{position:absolute;left:0;right:0;top:88px;bottom:128px;overflow:hidden}
+.grp{position:absolute;left:0;right:0;top:0;padding:30px 40px;display:flex;flex-direction:column;gap:22px}
+.ub{align-self:flex-end;max-width:880px;background:#FEF0EE;color:#1B2A3D;font-size:30px;font-weight:500;line-height:1.3;padding:18px 28px;border-radius:24px 24px 6px 24px}
+.chip{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;background:#EEF1F6;color:#4D5A66;font-size:23px;font-weight:500;padding:10px 20px 10px 14px;border-radius:999px}
+.chip .st{position:relative;width:28px;height:28px}
+.spin,.ok{position:absolute;inset:0;border-radius:50%}
+.spin{border:3.5px solid #C7CDD4;border-top-color:#F05B4A}
+.ok{background:#1E6B41;display:flex;align-items:center;justify-content:center}
+.chip img{width:20px;height:28px}
+.ans{font-size:30px;line-height:1.35;color:#1B2A3D}
+.tbl{border:1.5px solid #E2E6EB;border-radius:18px;overflow:hidden}
+.row{position:relative;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:24px;height:78px;padding:0 24px;border-top:1.5px solid #EEF1F6}
+.row:first-child{border-top:0}
+.kw{font-size:29px;font-weight:500;color:#1B2A3D;position:relative}
+.vol{font-size:23px;color:#4D5A66;position:relative}
+.pos{justify-self:end;font-size:26px;font-weight:600;background:#FEF0EE;color:#CC4232;white-space:nowrap;padding:4px 16px;border-radius:10px;position:relative}
+.hlbox{position:absolute;inset:0;background:#FFF8F7;box-shadow:inset 0 0 0 3px #F05B4A;border-radius:0}
+.callout{background:#FEF0EE;border-left:7px solid #F05B4A;border-radius:14px;padding:20px 26px;font-size:29px;line-height:1.35;color:#1B2A3D}
+.callout b{font-weight:600}
+.task{position:relative;display:grid;grid-template-columns:48px 1fr auto;gap:20px;align-items:center;border:1.5px solid #E2E6EB;border-radius:18px;padding:18px 22px}
+.num{width:48px;height:48px;border-radius:50%;background:#FEF0EE;color:#CC4232;font-size:25px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.tt{font-size:28px;font-weight:500;color:#1B2A3D;line-height:1.25}
+.ts{font-size:23px;color:#4D5A66;margin-top:4px}
+.badge{font-size:21px;font-weight:600;padding:6px 14px;border-radius:9px;white-space:nowrap}
+.okb{background:#E7F4EC;color:#1E6B41}
+.rev{background:#EEF1F6;color:#4D5A66}
+.neg{background:#FBEBE9;color:#A6342A}
+.tglow{position:absolute;inset:-1.5px;border-radius:18px;box-shadow:0 0 0 3px #F05B4A,0 12px 40px rgba(240,91,74,.25)}
+.kc{position:relative;border:1.5px solid #E2E6EB;border-radius:18px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.kc .k{font-size:29px;font-weight:600;color:#1B2A3D}
+.stats{display:flex;gap:26px;align-items:center;flex-shrink:0}
+.sl{font-size:22px;color:#4D5A66;display:flex;align-items:center;gap:12px}
+.cited{background:#FEF0EE;color:#CC4232}
+.gpos{background:#EEF1F6;color:#1B2A3D}
+.inp{position:absolute;left:32px;right:32px;bottom:26px;height:80px;border:2px solid #C7CDD4;border-radius:20px;display:flex;align-items:center;padding:0 100px 0 28px;font-size:29px;color:#1B2A3D}
+.ph{color:#6A737C;position:absolute;left:28px}
+#caret{display:inline-block;width:3px;height:36px;background:#F05B4A;margin-left:3px}
+.send{position:absolute;right:12px;top:10px;width:56px;height:56px;border-radius:50%;background:#F05B4A;display:flex;align-items:center;justify-content:center}
+
+/* captions */
+.cap{position:absolute;left:104px;top:50%;width:600px;transform:translateY(-50%);z-index:8}
+.lab{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.38);color:#fff;font-size:24px;font-weight:500;padding:10px 22px;border-radius:999px}
+.lab span{opacity:.7}
+.hl{font-size:72px;font-weight:500;color:#fff;letter-spacing:-1.5px;line-height:1.12;margin-top:30px}
+
+/* audit flurry */
+#flurry{position:absolute;inset:0;z-index:20;pointer-events:none}
+.ic{position:absolute;display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:13px 20px;font-size:23px;font-weight:500;color:#1B2A3D;box-shadow:0 14px 34px rgba(4,14,24,.22);white-space:nowrap}
+.ic i{width:13px;height:13px;border-radius:50%;display:block}
+#counter{position:absolute;left:104px;top:330px;width:560px;background:#F05B4A;border-radius:32px;padding:40px 48px;z-index:30;box-shadow:0 40px 90px rgba(4,14,24,.45)}
+#cnum{font-size:150px;font-weight:700;color:#fff;line-height:1;letter-spacing:-4px}
+#counter .ct{font-size:32px;color:#FFE9E6;margin-top:14px;font-weight:500}
+
+.end{font-size:140px;font-weight:700;color:#fff;letter-spacing:-3px;line-height:1}
+.endsub{font-size:44px;font-weight:500;color:#CBD5E0;margin-top:34px}
+</style></head>
+<body><div id="stage">
+  <div id="bg"><div id="letters">juicer</div></div>
+  <img id="wm" src="assets/wordmark.svg">
+  <div id="tag">Example data</div>
+
+  <div class="scene" id="s1">
+    <div class="h1"><span class="w">What</span> <span class="w">if</span> <span class="w">you</span> <span class="w">could</span> <span class="w">just</span></div>
+    <div class="h1"><span class="w pill">ask</span> <span class="w">your</span> <span class="w">social</span> <span class="w">feeds?</span></div>
+  </div>
+  <div class="scene" id="s1b">
+    <div class="h1"><span class="w">Meet</span> <span class="w">the</span> <span class="w">Juicer</span> <span class="w pill">MCP</span></div>
+  </div>
+
+  <div class="scene" id="s2">
+    <div id="s2row">
+      <div class="tile" id="t1" style="left:0"><img src="assets/icon.svg" style="width:120px;height:164px"></div>
+      <div class="tlabel" id="l1" style="left:0">Your Juicer feeds</div>
+      <div id="line"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="tile" id="t2" style="left:880px"><div class="spark"><svg width="92" height="92" viewBox="0 0 24 24"><path fill="#fff" d="M12 1.5C12.9 7.6 16.4 11.1 22.5 12C16.4 12.9 12.9 16.4 12 22.5C11.1 16.4 7.6 12.9 1.5 12C7.6 11.1 11.1 7.6 12 1.5Z"/></svg></div></div>
+      <div class="tlabel" id="l2" style="left:880px">Your AI assistant</div>
+    </div>
+    <div class="h2c" id="s2t">Your social feeds,<br><b>right inside your AI assistant.</b></div>
+  </div>
+
+  <!-- captions -->
+  <div class="cap" id="c1"><div class="lab">1/3 <span>·</span> Feed analytics</div><div class="hl">See which posts people <b>engage with most</b>.</div></div>
+  <div class="cap" id="c2"><div class="lab">2/3 <span>·</span> Moderation</div><div class="hl">Clear your moderation queue <b>in one go</b>.</div></div>
+  <div class="cap" id="c3"><div class="lab">3/3 <span>·</span> Search posts</div><div class="hl">Hear what people <b>say about you</b>.</div></div>
+
+  <div id="chat">
+    <div class="hdr">
+      <div class="av"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#fff" d="M12 1.5C12.9 7.6 16.4 11.1 22.5 12C16.4 12.9 12.9 16.4 12 22.5C11.1 16.4 7.6 12.9 1.5 12C7.6 11.1 11.1 7.6 12 1.5Z"/></svg></div>
+      <div class="nm">AI assistant</div>
+      <div class="conn"><i></i>Juicer connected</div>
+    </div>
+    <div id="thread">
+      <div class="grp" id="u1">
+        <div class="ub">Which posts got the most engagement this month?</div>
+        <div class="chip"><div class="st"><div class="spin"></div><div class="ok"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><img src="assets/icon.svg"><span>Juicer · Feed analytics</span></div>
+        <div class="ans">Your top 3 posts in the Website feed:</div>
+        <div class="tbl">
+          <div class="row"><div class="hlbox"></div><span class="kw">Sunset from our rooftop</span><span class="vol">Instagram</span><span class="pos">1,324 engagements</span></div>
+          <div class="row"><span class="kw">A slow morning at the spa</span><span class="vol">TikTok</span><span class="pos">1,012 engagements</span></div>
+          <div class="row"><span class="kw">Meet our concierge team</span><span class="vol">LinkedIn</span><span class="pos">437 engagements</span></div>
+        </div>
+        <div class="callout"><b>Worth knowing:</b> your two best posts are videos from Instagram and TikTok.</div>
+      </div>
+
+      <div class="grp" id="u2">
+        <div class="ub">Tidy up our lobby wall before check-in</div>
+        <div class="chip"><div class="st"><div class="spin"></div><div class="ok"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><img src="assets/icon.svg"><span>Juicer · Moderation</span></div>
+        <div class="ans">Your moderation queue, sorted:</div>
+        <div class="task"><div class="tglow"></div><div class="num">1</div><div><div class="tt">171 guest photos look good</div><div class="ts">Approve them all in one go?</div></div><div class="badge okb">Approve</div></div>
+        <div class="task"><div class="num">2</div><div class="tt">9 posts mention another hotel</div><div class="badge rev">Review</div></div>
+        <div class="task"><div class="num">3</div><div class="tt">6 posts contain blocked words</div><div class="badge neg">Reject</div></div>
+      </div>
+
+      <div class="grp" id="u3">
+        <div class="ub">What are guests saying about our new rooftop bar?</div>
+        <div class="chip"><div class="st"><div class="spin"></div><div class="ok"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><img src="assets/icon.svg"><span>Juicer · Search posts</span></div>
+        <div class="ans">Two posts from your feeds stand out:</div>
+        <div class="kc"><div class="tglow"></div><div class="k">"Best view in the city!"</div><div class="stats"><div class="sl">Google Reviews <span class="badge cited">5 stars</span></div></div></div>
+        <div class="kc"><div class="k">"Cocktails worth the trip"</div><div class="stats"><div class="sl">Instagram <span class="badge gpos">214 likes</span></div></div></div>
+        <div class="callout"><b>42 posts</b> mention the rooftop bar so far, most of them on Instagram.</div>
+      </div>
+    </div>
+    <div class="inp" id="inp"><span class="ph" id="ph">Ask anything…</span><span id="itext"></span><span id="caret"></span>
+      <div class="send" id="send"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" stroke="#fff" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  </div>
+
+  <div id="flurry"></div>
+  <div id="counter"><div id="cnum">0</div><div class="ct">posts waiting for review</div></div>
+
+  <div class="scene" id="s6">
+    <div class="h1"><span class="w">Ask</span> <span class="w">in</span> <span class="w">plain</span> <span class="w">language.</span></div>
+    <div class="h1"><span class="w">Get</span> <span class="w">answers</span> <span class="w">you</span> <span class="w">can</span> <span class="w pill">act on.</span></div>
+  </div>
+  <div class="scene" id="s7">
+    <div class="end" id="endt">Juicer MCP</div>
+    <div class="endsub" id="ends">Your social feeds, one question away.</div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,d)=>cl((t-a)/d);
+const eo=p=>1-Math.pow(1-p,3);
+const eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+const eb=p=>{const c1=1.5,c3=c1+1;return p<=0?0:1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const L=(a,b,p)=>a+(b-a)*p;
+function apply(el,op,tr,filter){el.style.opacity=op;el.style.visibility=op<=0.002?'hidden':'visible';el.style.transform=tr;if(filter!==undefined)el.style.filter=filter}
+// element in at a, out at b
+function pop(el,t,a,b,o={}){
+  const {dy=26,dx=0,s0=.97,d=.5,d2=.35,ease=eo,blur=0,out=-1}=o;
+  const pi=P(t,a,d), iv=eo(pi), is=ease(pi), q=b==null?0:eio(P(t,b,d2));
+  apply(el,iv*(1-q),`translate(${(1-is)*dx}px,${(1-is)*dy+q*dy*out}px) scale(${s0+(1-s0)*is})`,blur?`blur(${(1-iv)*blur+q*blur}px)`:undefined);
+  return iv*(1-q);
+}
+function words(els,t,a,stg,b,o={}){
+  const {dy=70,blur=12,d=.6,d2=.35}=o;
+  els.forEach((el,j)=>{
+    const pi=P(t,a+j*stg,d), iv=eo(pi), q=b==null?0:eio(P(t,b+j*.03,d2));
+    const s=el.classList.contains('pill')?L(.6,1,eb(pi)):1;
+    apply(el,iv*(1-q),`translateY(${(1-iv)*dy-q*dy*.7}px) scale(${s})`,`blur(${(1-iv)*blur+q*blur}px)`);
+  });
+}
+function scene(el,t,a,b){const on=t>=a-0.05&&t<=b;el.style.display=on?'flex':'none';return on}
+
+// ---- audit flurry cards (seeded) ----
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+// fictional incoming posts, dot = platform colour
+const ISS=[['#stayatsolenne','#E1306C'],['Pool day!','#000000'],['@hotelsolenne tagged you','#1877F2'],['New photo','#E1306C'],['Room with a view','#1185FE'],['#stayatsolenne','#FF0000'],['Friendly staff','#4285F4'],['Back next summer','#E1306C'],['Best breakfast ever','#FF4500'],['#stayatsolenne','#000000'],['Rooftop sunset','#1877F2'],['Spa day','#E1306C'],['Lobby selfie','#1185FE'],['Late check-out, please','#000000'],['#stayatsolenne','#0A66C2'],['Loved our stay','#4285F4']];
+const FL=[];const N=46;
+const fl=$('#flurry');
+for(let i=0;i<N;i++){
+  const d=document.createElement('div');d.className='ic';
+  const [txt,c]=ISS[i%ISS.length];d.innerHTML=`<i style="background:${c}"></i>${txt}`;
+  fl.appendChild(d);
+  // spread over the whole frame, a bit denser on the left
+  const x=i%3===0?L(40,1600,rnd()):L(30,1500,rnd()), y=L(130,960,rnd());
+  FL.push({el:d,x,y,r:L(-7,7,rnd()),a:24.9+i*0.05+rnd()*0.1,ph:rnd()*6});
+  d.style.left='0px';d.style.top='0px';
+}
+let TARGET={x:1100,y:420};
+const groups=['#u1','#u2','#u3'].map(s=>$(s));
+let SCROLL=[0,0,0];
+
+// ---- timeline ----
+const U=[ // typing start, text, send time
+  {a:9.7, s:11.95, text:'Which posts got the most engagement this month?', cps:26},
+  {a:22.3,s:23.9, text:'Tidy up our lobby wall before check-in', cps:24},
+  {a:36.2,s:38.45,text:"What are guests saying about our new rooftop bar?", cps:28},
+];
+function seek(t){
+  // background drift
+  $('#letters').style.transform=`translateX(${200-t*9}px)`;
+  $('#tag').style.opacity=cl(P(t,9.2,.5))*(1-P(t,45.8,.4));
+
+  // scene 1
+  if(scene($('#s1'),t,0,3.6)){
+    const s=$('#s1');s.style.transform=`scale(${1+t*.012})`;
+    words($$('#s1 .h1:first-child .w'),t,.25,.09,3.05);
+    words($$('#s1 .h1:last-child .w'),t,1.0,.13,3.15);
+  }
+  if(scene($('#s1b'),t,3.3,5.2)){
+    $('#s1b').style.transform=`scale(${1+(t-3.3)*.015})`;
+    words($$('#s1b .w'),t,3.4,.13,4.8);
+  }
+  // scene 2
+  if(scene($('#s2'),t,4.9,9.1)){
+    const q=eio(P(t,8.55,.45));
+    $('#s2').style.opacity=1-q; $('#s2').style.transform=`scale(${1-q*.08})`;
+    pop($('#t1'),t,5.0,null,{dy:60,s0:.6,ease:eb,d:.6});
+    pop($('#t2'),t,5.15,null,{dy:60,s0:.6,ease:eb,d:.6});
+    pop($('#l1'),t,5.45,null,{dy:14});pop($('#l2'),t,5.55,null,{dy:14});
+    const lp=eio(P(t,5.6,.6));$('#line').style.transform=`scaleX(${lp})`;$('#line').style.opacity=lp>0?1:0;
+    $$('#s2 .dot').forEach((d,k)=>{
+      const f=((t-6.1)*.55+k/3)%1, on=t>6.1;
+      d.style.left=(300+f*516)+'px';
+      d.style.opacity=on?Math.sin(f*Math.PI)*cl((t-6.1)*3):0;
+      d.style.transform=`scale(${.7+.5*Math.sin(f*Math.PI)})`;
+    });
+    pop($('#s2t'),t,6.0,null,{dy:40,blur:10,d:.7});
+  }
+  // chat window
+  const chat=$('#chat');
+  {
+    const i=eo(P(t,8.85,.9)), q=eio(P(t,45.9,.55));
+    const zoom=1+.03*eio(P(t,16.2,1.0))*(1-eio(P(t,20.8,.6)))+.03*eio(P(t,42.0,1.0));
+    chat.style.opacity=i*(1-q);chat.style.visibility=i*(1-q)>0?'visible':'hidden';
+    chat.style.transform=`perspective(1800px) translate(${(1-i)*760}px,${Math.sin(t*.8)*4+q*40}px) rotateY(${(1-i)*-26}deg) scale(${zoom*(1-q*.1)})`;
+  }
+  // input field
+  let txt='',typing=false,idx=-1;
+  U.forEach((u,k)=>{ if(t>=u.a&&t<u.s){txt=u.text.slice(0,Math.floor(cl((t-u.a)*u.cps,0,u.text.length)));typing=true;idx=k} });
+  $('#itext').textContent=txt;$('#ph').style.display=txt?'none':'block';
+  $('#caret').style.opacity=typing?(txt.length<U[idx].text.length?1:(Math.floor(t*2.5)%2?0:1)):0;
+  $('#inp').style.borderColor=typing?'#F05B4A':'#C7CDD4';
+  let sp=1;U.forEach(u=>{const p=P(t,u.s-.08,.25);if(p>0&&p<1)sp=1-.18*Math.sin(p*Math.PI)});
+  $('#send').style.transform=`scale(${sp})`;
+
+  // use-case groups: [group, children timing]
+  const T1=[11.95,12.3,13.9,14.25,16.3], T2=[23.9,24.2,29.05,29.4], T3=[38.45,38.75,40.1,40.45];
+  useCase(0,t,11.95,21.3,{chipA:12.3,chipDone:13.7,items:[['.ub',11.95],['.ans',13.9],['.tbl',14.2],['.row:nth-child(1)',14.25],['.row:nth-child(2)',14.55],['.row:nth-child(3)',14.85],['.callout',16.3]],scrollAt:16.2});
+  useCase(1,t,23.9,35.3,{chipA:24.2,chipDone:28.9,items:[['.ub',23.9],['.ans',29.05],[':scope>:nth-child(4)',29.4],[':scope>:nth-child(5)',29.75],[':scope>:nth-child(6)',30.1]],scrollAt:30.0});
+  useCase(2,t,38.45,99,{chipA:38.75,chipDone:39.9,items:[['.ub',38.45],['.ans',40.1],[':scope>:nth-child(4)',40.45],[':scope>:nth-child(5)',40.8],['.callout',42.0]],scrollAt:41.9});
+  // highlights
+  const h1=eo(P(t,15.7,.5));$('#u1 .hlbox').style.opacity=h1;
+  $$('#u1 .row:nth-child(1) .pos')[0].style.transform=`scale(${1+.18*Math.sin(cl((t-15.7)/.5)*Math.PI)})`;
+  $('#u2 .tglow').style.opacity=eo(P(t,31.0,.5));
+  $('#u3 .tglow').style.opacity=eo(P(t,41.4,.5));
+  $$('#u3 .cited')[0].style.transform=`scale(${1+.2*Math.sin(cl((t-41.4)/.5)*Math.PI)})`;
+
+  // captions
+  cap($('#c1'),t,9.4,9.6,21.3);
+  cap($('#c2'),t,21.9,29.3,35.3);
+  cap($('#c3'),t,35.8,36.0,45.7);
+
+  // flurry + counter
+  FL.forEach((f,i)=>{
+    const pi=P(t,f.a,.45), iv=eo(pi), is=eb(pi);
+    const ca=27.9+i*.012, cp=eio(P(t,ca,.75));
+    const x=L(f.x,TARGET.x,cp)+Math.sin(t*1.3+f.ph)*6*(1-cp), y=L(f.y,TARGET.y,cp)+Math.cos(t*1.1+f.ph)*6*(1-cp);
+    const op=iv*(1-P(t,ca+.45,.3));
+    f.el.style.opacity=op;f.el.style.visibility=op>0?'visible':'hidden';
+    f.el.style.transform=`translate(${x}px,${y}px) rotate(${f.r*(1-cp)}deg) scale(${L(.5,1,is)*L(1,.2,cp)})`;
+  });
+  const cv=pop($('#counter'),t,24.8,27.75,{dy:40,s0:.85,ease:eb,d:.55,d2:.35});
+  $('#cnum').textContent=Math.round(186*eo(P(t,24.9,2.4)));
+
+  // outro
+  if(scene($('#s6'),t,46.2,49.1)){
+    words($$('#s6 .h1:first-child .w'),t,46.35,.1,48.65);
+    words($$('#s6 .h1:last-child .w'),t,47.05,.11,48.75);
+  }
+  if(scene($('#s7'),t,48.9,99)){
+    pop($('#endt'),t,49.05,null,{dy:50,blur:14,s0:.9,d:.7});
+    pop($('#ends'),t,49.5,null,{dy:30,blur:8,d:.6});
+  }
+}
+function cap(el,t,a,a2,b){
+  const q=eio(P(t,b,.45));
+  const on=t>=a-.01&&q<1; // gate with opacity, not visibility: pop() children would bleed through
+  el.style.transform=`translateY(calc(-50% + ${-q*30}px))`;el.style.filter=`blur(${q*8}px)`;el.style.opacity=on?1-q:0;
+  pop(el.querySelector('.lab'),t,a,null,{dy:20,d:.45});
+  pop(el.querySelector('.hl'),t,a2,null,{dy:40,blur:10,d:.65});
+}
+function useCase(k,t,a,b,o){
+  const g=groups[k];const q=eio(P(t,b,.45));
+  const on=t>=a-.01&&q<1;g.style.visibility=on?'visible':'hidden';g.style.opacity=1-q;
+  const sc=SCROLL[k]*eio(P(t,o.scrollAt,.6));
+  g.style.transform=`translateY(${-sc-q*40}px)`;
+  o.items.forEach(([s,ta])=>pop(g.querySelector(s),t,ta,null,{dy:s==='.ub'?30:24,s0:s==='.ub'?.92:.98,ease:s==='.ub'?eb:eo,d:.45}));
+  const chip=g.querySelector('.chip');pop(chip,t,o.chipA,null,{dy:16,d:.4});
+  const dn=eo(P(t,o.chipDone,.3));
+  chip.querySelector('.spin').style.opacity=1-dn;chip.querySelector('.spin').style.transform=`rotate(${t*420}deg)`;
+  chip.querySelector('.ok').style.opacity=dn;chip.querySelector('.ok').style.transform=`scale(${L(.4,1,eb(P(t,o.chipDone,.35)))})`;
+}
+window.seek=seek;
+window.DURATION=52; window.FPS=30;
+document.fonts.ready.then(()=>{
+  const area=$('#thread').clientHeight;
+  groups.forEach((g,k)=>{SCROLL[k]=Math.max(0,g.scrollHeight-area+10)});
+  seek(26);
+  const r=groups[1].querySelector('.chip').getBoundingClientRect();
+  TARGET={x:r.left+40,y:r.top};
+  seek(0);window.ready=true;
+});
+</script>
+</body></html>

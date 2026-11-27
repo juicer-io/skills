@@ -58,9 +58,25 @@ cp -r skills/juicer ~/.claude/skills/
 our Instagram and TikTok on the homepage", "pull last week's posts for
 #coffee on Instagram and X". Invoke it directly with `/juicer` (`/juicer:juicer` when installed as a plugin).
 
+## Also in this repo: `product-promo-video`
+
+A second, separate skill that makes short motion-graphics product videos (kinetic text,
+animated UI, synthesized music, subtitles and a thumbnail) from a storyboard, with no video
+editor. It is the skill our team uses for Juicer's own videos and ships with the Juicer brand
+as the worked example; swap in your own brand first.
+
+It is **not** part of the `juicer` plugin above and does not need a Juicer account. Unlike the
+plugin, it contains scripts: Node and Python files that render frames in your local Chrome and
+synthesize audio on your machine. They make no network calls. You install `puppeteer-core` and
+`ffmpeg-static` from npm in your build folder.
+
+```bash
+cp -r skills/product-promo-video ~/.claude/skills/
+```
+
 ## What it runs and sends
 
-The plugin contains no scripts or binaries: a skill (Markdown) and a one-line
+The `juicer` plugin contains no scripts or binaries: a skill (Markdown) and a one-line
 reference to the connector URL. Nothing in it holds a secret.
 
 - **Connector path:** your agent calls `https://api.juicer.io/mcp`. Sign-in is

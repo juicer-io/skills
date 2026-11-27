@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="video-size" content="1080x1920"><title>Brand Listening vertical video</title>
+<style>
+@font-face{font-family:G;src:local("Proxima Nova Regular"),local("ProximaNova-Regular"),local("Montserrat Regular"),local("Montserrat-Regular");font-weight:400}
+@font-face{font-family:G;src:local("Proxima Nova Medium"),local("ProximaNova-Medium"),local("Montserrat SemiBold"),local("Montserrat-SemiBold");font-weight:500}
+@font-face{font-family:G;src:local("Proxima Nova Semibold"),local("ProximaNova-Semibold"),local("Montserrat SemiBold"),local("Montserrat-SemiBold");font-weight:600}
+@font-face{font-family:G;src:local("Proxima Nova Bold"),local("ProximaNova-Bold"),local("Montserrat Bold"),local("Montserrat-Bold");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#102738}
+body{font-family:G,Helvetica,sans-serif;color:#1B2A3D;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden}
+#bg{position:absolute;inset:0;background:#102738}
+#letters{position:absolute;top:760px;font-size:620px;font-weight:700;letter-spacing:-14px;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);line-height:.9;white-space:nowrap}
+/* safe zone for IG Reels / TikTok overlays: x 72-940, y 240-1500 */
+#wm{position:absolute;left:72px;top:240px;height:46px;z-index:50}
+#tag{position:absolute;left:72px;top:1462px;z-index:50;font-size:22px;font-weight:500;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.45);border-radius:999px;padding:7px 18px}
+
+.scene{position:absolute;left:0;right:0;top:240px;height:1260px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5}
+.h1{font-size:104px;font-weight:600;color:#fff;letter-spacing:-2.5px;line-height:1.16;text-align:center;white-space:nowrap}
+.w{display:inline-block;will-change:transform,opacity,filter}
+.pill{background:#F05B4A;color:#fff;padding:0 30px 8px;border-radius:26px;box-shadow:0 20px 50px rgba(4,14,24,.35)}
+.float{position:absolute;font-size:38px;font-weight:600;color:rgba(255,255,255,.13);white-space:nowrap}
+
+/* captions */
+.cap{position:absolute;left:72px;top:340px;width:868px;z-index:8}
+.hl{font-size:78px;font-weight:500;color:#fff;letter-spacing:-1.5px;line-height:1.12}
+.hl b{font-weight:700;color:#F05B4A}
+
+/* app card */
+#app{position:absolute;left:72px;top:680px;width:868px;height:760px;background:#fff;border-radius:28px;box-shadow:0 50px 120px rgba(4,14,24,.55),0 0 0 1px rgba(255,255,255,.4);z-index:10;overflow:hidden}
+.hdr{height:88px;border-bottom:1.5px solid #EEF1F6;display:flex;align-items:center;padding:0 36px;gap:16px}
+.hdr img{height:36px}
+.nm{font-size:30px;font-weight:700;color:#1B2A3D}
+.scr{position:absolute;left:0;right:0;top:88px;bottom:0;padding:36px 40px;overflow:hidden}
+.lbl{font-size:26px;font-weight:600;color:#1B2A3D;margin-bottom:14px}
+#inp{height:88px;border:2px solid #C7CDD4;border-radius:18px;display:flex;align-items:center;padding:0 26px;font-size:34px;color:#1B2A3D;position:relative}
+.ph{color:#6A737C;position:absolute;left:26px}
+#caret{display:inline-block;width:3px;height:40px;background:#F05B4A;margin-left:3px}
+.hint{font-size:23px;color:#4D5A66;margin-top:12px}
+#go{height:88px;margin-top:30px;border-radius:18px;background:#F05B4A;color:#fff;font-size:32px;font-weight:600;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+#prog{margin-top:30px;border:1.5px solid #E2E6EB;border-radius:22px;padding:24px 28px}
+.step{display:grid;grid-template-columns:36px 1fr;gap:18px;align-items:center;margin-top:18px}
+.step:first-child{margin-top:0}
+.stx{font-size:27px;line-height:1.3;color:#1B2A3D}
+.st{position:relative;width:36px;height:36px}
+.idle,.spin,.ok{position:absolute;inset:0;border-radius:50%}
+.idle{border:3px solid #E2E6EB}
+.spin{border:4px solid #E2E6EB;border-top-color:#F05B4A}
+.ok{background:#1E6B41;display:flex;align-items:center;justify-content:center}
+
+/* report */
+#rep{position:relative}
+#rtop{display:flex;align-items:baseline;gap:16px}
+#rtop .bn{font-size:44px;font-weight:700;color:#1B2A3D;letter-spacing:-.5px}
+#rtop .dom{font-size:24px;color:#6A737C}
+.blk{margin-top:26px;border:1.5px solid #E2E6EB;border-radius:22px;padding:22px 26px}
+.ct{font-size:24px;font-weight:600;color:#4D5A66}
+.mrow{display:flex;align-items:flex-end;gap:22px}
+#mnum{font-size:112px;font-weight:700;color:#1B2A3D;letter-spacing:-3px;line-height:1}
+.ms{font-size:26px;color:#4D5A66;padding-bottom:12px;line-height:1.35}
+.pls{display:flex;gap:9px;margin-top:8px}
+.pls i{width:18px;height:18px;border-radius:50%;display:block}
+.sbar{display:flex;height:26px;border-radius:999px;overflow:hidden;margin-top:16px;background:#EEF1F6}
+.sbar i{display:block;height:100%;transform-origin:left center}
+.leg{display:flex;gap:26px;font-size:24px;color:#1B2A3D;margin-top:16px;white-space:nowrap}
+.leg span{display:flex;align-items:center;gap:9px}
+.leg i{width:15px;height:15px;border-radius:4px;display:block}
+.leg b{font-weight:700}
+#lm{font-size:30px;font-weight:700;color:#1B2A3D;margin-top:30px}
+.mc{position:relative;border:1.5px solid #E2E6EB;border-radius:22px;padding:22px 26px;margin-top:16px}
+.mh{display:flex;align-items:center;gap:10px;font-size:24px;color:#4D5A66;white-space:nowrap}
+.mh b{font-weight:600;color:#1B2A3D}
+.neg{margin-left:auto;font-size:22px;font-weight:600;background:#FBEBE9;color:#A6342A;padding:5px 14px;border-radius:9px}
+.mt{font-size:30px;line-height:1.3;color:#1B2A3D;margin-top:12px}
+.why{font-size:24px;color:#4D5A66;margin-top:10px}
+.ring{position:absolute;inset:-1.5px;border-radius:22px;box-shadow:0 0 0 4px #F05B4A,0 12px 40px rgba(240,91,74,.25)}
+
+/* flurry */
+#flurry{position:absolute;inset:0;z-index:20;pointer-events:none}
+.ic{position:absolute;left:0;top:0;display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:13px 20px;font-size:26px;font-weight:500;color:#1B2A3D;box-shadow:0 14px 34px rgba(4,14,24,.35);white-space:nowrap}
+.ic i{width:16px;height:16px;border-radius:50%;display:block;flex-shrink:0}
+
+/* end */
+.end{font-size:88px;font-weight:700;color:#fff;letter-spacing:-2px;line-height:1;margin-top:90px}
+.endsub{font-size:44px;font-weight:500;color:#CBD5E0;margin-top:26px}
+.endsub b{color:#fff;font-weight:700}
+</style></head>
+<body><div id="stage">
+  <div id="bg"><div id="letters">juicer</div></div>
+  <img id="wm" src="assets/wordmark.svg" alt="">
+  <div id="tag">Example data</div>
+
+  <div class="scene" id="s1">
+    <div class="float" style="left:90px;top:120px">Reddit</div>
+    <div class="float" style="left:640px;top:200px">LinkedIn</div>
+    <div class="float" style="left:120px;top:1080px">TikTok</div>
+    <div class="float" style="left:600px;top:1140px">YouTube</div>
+    <div class="float" style="left:360px;top:40px">Instagram</div>
+    <div class="float" style="left:820px;top:1000px">X</div>
+    <div class="h1"><span class="w">People</span> <span class="w">are</span></div>
+    <div class="h1"><span class="w">talking</span> <span class="w">about</span></div>
+    <div class="h1"><span class="w">your</span> <span class="w">brand.</span></div>
+    <div class="h1" style="margin-top:40px"><span class="w">Are</span> <span class="w">you</span></div>
+    <div class="h1" style="margin-top:16px"><span class="w pill">listening?</span></div>
+  </div>
+
+  <div class="cap" id="c1"><div class="hl">Type your <b>website.</b></div></div>
+  <div class="cap" id="c2"><div class="hl">Every mention, <b>in one report.</b></div></div>
+  <div class="cap" id="c3"><div class="hl">Know <b>how people feel</b>, and why.</div></div>
+
+  <div id="app">
+    <div class="hdr"><img src="assets/icon.svg" alt=""><div class="nm">Brand Listening</div></div>
+
+    <div class="scr" id="scrA">
+      <div class="lbl">Website</div>
+      <div id="inp"><span class="ph" id="ph">e.g. airbnb.com</span><span id="itext"></span><span id="caret"></span></div>
+      <div class="hint">We use the domain to confirm mentions are about you.</div>
+      <div id="go">Generate brand report</div>
+      <div id="prog">
+        <div class="step" id="sa"><div class="st"><div class="idle"></div><div class="spin"></div><div class="ok"><svg width="18" height="18" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="stx">Reading <b id="n1">0</b> posts</div></div>
+        <div class="step" id="sb"><div class="st"><div class="idle"></div><div class="spin"></div><div class="ok"><svg width="18" height="18" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="stx">Keeping <b id="n2">0</b> real mentions</div></div>
+      </div>
+    </div>
+
+    <div class="scr" id="scrB"><div id="rep">
+      <div id="rtop"><div class="bn">Hotel Solenne</div><div class="dom">hotelsolenne.com</div></div>
+      <div class="blk" id="k1">
+        <div class="mrow"><div id="mnum">0</div><div class="ms">mentions across 6 platforms<div class="pls"><i style="background:#E1306C"></i><i style="background:#FE2C55"></i><i style="background:#FF4500"></i><i style="background:#000"></i><i style="background:#0A66C2"></i><i style="background:#FF0000"></i></div></div></div>
+      </div>
+      <div class="blk" id="k2"><div class="ct">Sentiment</div>
+        <div class="sbar"><i id="b1" style="width:62%;background:#1E6B41"></i><i id="b2" style="width:27%;background:#9AA5B1"></i><i id="b3" style="width:11%;background:#A6342A"></i></div>
+        <div class="leg"><span><i style="background:#1E6B41"></i><b>62%</b> positive</span><span><i style="background:#9AA5B1"></i><b>27%</b> neutral</span><span><i style="background:#A6342A"></i><b>11%</b> negative</span></div>
+      </div>
+      <div id="lm">Latest mentions</div>
+      <div class="mc" id="m1"><div class="ring"></div>
+        <div class="mh"><i style="width:16px;height:16px;border-radius:50%;background:#FF4500;display:block"></i><b>Reddit</b> · u/weekend_traveler · 2h<span class="neg">Negative</span></div>
+        <div class="mt">Waited 40 minutes at check-in and the room still wasn't ready.</div>
+        <div class="why">✨ Complains about slow check-in</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="flurry"></div>
+
+  <div class="scene" id="s7">
+    <div class="h1"><span class="w">Hear</span> <span class="w">it</span> <span class="w">first.</span></div>
+    <div class="h1" style="margin-top:16px"><span class="w pill">Act on it.</span></div>
+    <div class="end" id="endt">Brand Listening</div>
+    <div class="endsub" id="ends">on Juicer · <b>juicer.io</b></div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,d)=>cl((t-a)/d);
+const eo=p=>1-Math.pow(1-p,3);
+const eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+const eb=p=>{const c1=1.5,c3=c1+1;return p<=0?0:1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const L=(a,b,p)=>a+(b-a)*p;
+function apply(el,op,tr,filter){el.style.opacity=op;el.style.visibility=op<=0.002?'hidden':'visible';el.style.transform=tr;if(filter!==undefined)el.style.filter=filter}
+function pop(el,t,a,b,o={}){
+  const {dy=26,dx=0,s0=.97,d=.5,d2=.35,ease=eo,blur=0,out=-1}=o;
+  const pi=P(t,a,d), iv=eo(pi), is=ease(pi), q=b==null?0:eio(P(t,b,d2));
+  apply(el,iv*(1-q),`translate(${(1-is)*dx}px,${(1-is)*dy+q*dy*out}px) scale(${s0+(1-s0)*is})`,blur?`blur(${(1-iv)*blur+q*blur}px)`:undefined);
+  return iv*(1-q);
+}
+function words(els,t,a,stg,b,o={}){
+  const {dy=70,blur=12,d=.5,d2=.3}=o;
+  els.forEach((el,j)=>{
+    const pi=P(t,a+j*stg,d), iv=eo(pi), q=b==null?0:eio(P(t,b+j*.03,d2));
+    const s=el.classList.contains('pill')?L(.6,1,eb(pi)):1;
+    apply(el,iv*(1-q),`translateY(${(1-iv)*dy-q*dy*.7}px) scale(${s})`,`blur(${(1-iv)*blur+q*blur}px)`);
+  });
+}
+function scene(el,t,a,b){const on=t>=a-0.05&&t<=b;el.style.display=on?'flex':'none';return on}
+function screen(el,t,a,b){const q=eio(P(t,b,.35));const on=t>=a-.01&&q<1;el.style.display=on?'block':'none';el.style.opacity=1-q;el.style.transform=`translateY(${-q*30}px)`;return on}
+function cap(el,t,a,b){
+  const q=eio(P(t,b,.35));
+  el.style.visibility=(t>=a-.01&&q<1)?'visible':'hidden';
+  el.style.transform=`translateY(${-q*30}px)`;el.style.filter=`blur(${q*8}px)`;el.style.opacity=1-q;
+  pop(el.querySelector('.hl'),t,a,null,{dy:40,blur:10,d:.5});
+}
+function step(row,t,a,done){
+  const sp=row.querySelector('.spin'),ok=row.querySelector('.ok'),id=row.querySelector('.idle');
+  const act=t>=a, dn=eo(P(t,done,.25));
+  id.style.opacity=act?0:1;
+  sp.style.opacity=act?1-dn:0;sp.style.transform=`rotate(${t*420}deg)`;
+  ok.style.opacity=dn;ok.style.transform=`scale(${L(.4,1,eb(P(t,done,.3)))})`;
+  row.querySelector('.stx').style.color=act?'#1B2A3D':'#9AA5B1';
+}
+const fmt=n=>n.toLocaleString('en-US');
+
+// ---- timeline (audio.py copies these) ----
+const T={
+  hookOut:2.05, cardIn:2.4, c1:2.5, typeA:3.0, cps:26, click:3.8,
+  progIn:3.95, flurryA:4.05, drop:5.0, collapse:5.6, readDone:5.4, keepDone:6.1,
+  repIn:6.45, c2:6.6, count:6.7, bar:7.1,
+  scroll:10.1, c3:10.2, mention:10.45, ring:11.3,
+  out:12.8, endA:13.25, endB:13.95
+};
+const TEXT='hotelsolenne.com';
+
+// ---- mention flurry (seeded): kept = on-brand mentions, rest are filtered out ----
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const KEEP=[['Best rooftop view in town','#E1306C'],['#stayatsolenne pool day','#E1306C'],['Room tour at Hotel Solenne','#FE2C55'],['Fully booked again?!','#FF4500'],['Breakfast @hotelsolenne','#000000'],['Their rooftop cocktails though','#FE2C55'],['Hotel Solenne opened a spa!','#0A66C2']];
+const DROP=[["Solenne's birthday party",'#FF4500'],['Baby names like Solenne','#000000'],['Solenne album review','#FF0000'],['Solenne fashion haul','#FF0000'],['Hotel room smell hacks','#E1306C']];
+const FL=[];const N=15;
+const fl=$('#flurry');
+for(let i=0;i<N;i++){
+  const d=document.createElement('div');d.className='ic';
+  const keep=i%3===0;const src=keep?KEEP[(i/3|0)%KEEP.length]:DROP[i%DROP.length];
+  d.textContent='';d.innerHTML=`<i style="background:${src[1]}"></i>`;d.appendChild(document.createTextNode(src[0]));
+  fl.appendChild(d);
+  const col=i%2,row=i>>1;FL.push({el:d,keep,x:(col?520:40)+L(-30,30,rnd()),y:600+row*112+L(-14,14,rnd()),r:L(-5,5,rnd()),a:T.flurryA+i*0.07+rnd()*0.05,ph:rnd()*6});
+}
+const TARGET={x:300,y:1260};
+let SCROLL=0;
+
+function seek(t){
+  $('#letters').style.transform=`translateX(${120-t*22}px)`;
+  $('#tag').style.opacity=cl(P(t,2.8,.4))*(1-P(t,T.out,.3));
+
+  // scene 1: hook, visible from frame 1
+  if(scene($('#s1'),t,0,T.hookOut+.45)){
+    $('#s1').style.transform=`scale(${1+t*.012})`;
+    $$('#s1 .float').forEach((f,k)=>{f.style.opacity=cl(P(t,k*.08,.5))*(1-P(t,T.hookOut,.3));f.style.transform=`translate(${Math.sin(t*.9+k)*24}px,${Math.cos(t*.7+k)*16}px)`});
+    const H=$$('#s1 .h1');
+    words([...H[0].children],t,-.3,.07,T.hookOut);
+    words([...H[1].children],t,-.05,.07,T.hookOut+.03);
+    words([...H[2].children],t,.2,.07,T.hookOut+.06);
+    words([...H[3].children],t,.75,.09,T.hookOut+.09);
+    words([...H[4].children],t,1.0,.1,T.hookOut+.12);
+  }
+
+  // app card rises from the bottom
+  const app=$('#app');
+  {
+    const i=eo(P(t,T.cardIn,.6)), q=eio(P(t,T.out,.4));
+    const zoom=1+.03*eio(P(t,T.ring,.8));
+    app.style.opacity=i*(1-q);app.style.visibility=i*(1-q)>0?'visible':'hidden';
+    app.style.transform=`perspective(1800px) translateY(${(1-i)*700-q*40}px) rotateX(${(1-i)*18}deg) scale(${zoom*(1-q*.08)})`;
+  }
+
+  // screen A: website, generate, filtering
+  if(screen($('#scrA'),t,0,T.repIn-.3)){
+    const end=T.typeA+TEXT.length/T.cps;
+    const typing=t>=T.typeA-.3&&t<T.click+.2;
+    const txt=t<T.typeA?'':TEXT.slice(0,Math.floor(cl((t-T.typeA)*T.cps,0,TEXT.length)));
+    $('#itext').textContent=txt;$('#ph').style.display=txt?'none':'block';
+    $('#caret').style.opacity=typing?(t<end?1:(Math.floor(t*4)%2?0:1)):0;
+    $('#inp').style.borderColor=typing?'#F05B4A':'#C7CDD4';
+    const p=P(t,T.click,.22);$('#go').style.transform=`scale(${p>0&&p<1?1-.1*Math.sin(p*Math.PI):1})`;
+    pop($('#prog'),t,T.progIn,null,{dy:24,d:.4});
+    step($('#sa'),t,T.progIn+.05,T.readDone);pop($('#sb'),t,T.readDone-.1,null,{dy:14,d:.3});step($('#sb'),t,T.readDone,T.keepDone);
+    $('#n1').textContent=fmt(Math.round(1120*eo(P(t,T.progIn+.05,1.3))));
+    $('#n2').textContent=fmt(Math.round(264*eo(P(t,T.readDone,.7))));
+  }
+
+  // flurry: pop in, off-topic posts drop out, the rest collapse into the card
+  FL.forEach((f,i)=>{
+    const pi=P(t,f.a,.35), iv=eo(pi), is=eb(pi);
+    let x=f.x+Math.sin(t*1.6+f.ph)*6, y=f.y+Math.cos(t*1.3+f.ph)*6, sc=L(.5,1,is), op=iv, rot=f.r;
+    if(f.keep){
+      const cp=eio(P(t,T.collapse+i*.008,.5));
+      x=L(x,TARGET.x,cp);y=L(y,TARGET.y,cp);sc*=L(1,.2,cp);rot*=1-cp;op*=1-P(t,T.collapse+i*.008+.35,.2);
+    }else{
+      const dp=eio(P(t,T.drop+(i%7)*.05,.4));
+      y+=dp*70;op*=1-dp;f.el.style.filter=`grayscale(${dp})`;
+    }
+    f.el.style.opacity=op;f.el.style.visibility=op>0.002?'visible':'hidden';
+    f.el.style.transform=`translate(${x}px,${y}px) rotate(${rot}deg) scale(${sc})`;
+  });
+
+  // screen B: report, then the latest mention
+  if(screen($('#scrB'),t,T.repIn,99)){
+    $('#rep').style.transform=`translateY(${-SCROLL*eio(P(t,T.scroll,.6))}px)`;
+    pop($('#rtop'),t,T.repIn+.05,T.scroll,{dy:24,d:.4,d2:.4});
+    pop($('#k1'),t,T.repIn+.2,null,{dy:30,s0:.92,ease:eb,d:.45});
+    pop($('#k2'),t,T.bar-.15,null,{dy:30,s0:.92,ease:eb,d:.45});
+    $('#mnum').textContent=fmt(Math.round(264*eo(P(t,T.count,1.1))));
+    ['#b1','#b2','#b3'].forEach((s,k)=>$(s).style.transform=`scaleX(${eo(P(t,T.bar+k*.25,.45))})`);
+    pop($('#lm'),t,T.scroll+.2,null,{dy:20,d:.4});
+    pop($('#m1'),t,T.mention,null,{dy:40,s0:.94,ease:eb,d:.5});
+    $('#m1 .ring').style.opacity=eo(P(t,T.ring,.4));
+  }
+
+  cap($('#c1'),t,T.c1,T.repIn-.1);
+  cap($('#c2'),t,T.c2,T.scroll);
+  cap($('#c3'),t,T.c3+.15,T.out);
+
+  // end card
+  if(scene($('#s7'),t,T.endA,99)){
+    const H=$$('#s7 .h1');
+    words([...H[0].children],t,T.endA,.09,null);
+    words([...H[1].children],t,T.endA+.35,.1,null);
+    pop($('#endt'),t,T.endB,null,{dy:40,blur:12,s0:.92,d:.5});
+    pop($('#ends'),t,T.endB+.25,null,{dy:26,blur:8,d:.45});
+  }
+}
+window.seek=seek;window.T=T;
+window.DURATION=15;window.FPS=30;
+document.fonts.ready.then(()=>{
+  seek(12);
+  const scr=$('#scrB'),m=$('#m1');
+  SCROLL=Math.max($('#k1').offsetTop,m.offsetTop+m.offsetHeight-(scr.clientHeight-36-36));
+  seek(0);window.ready=true;
+});
+</script>
+</body></html>
